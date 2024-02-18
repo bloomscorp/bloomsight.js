@@ -8,14 +8,12 @@ import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../l
 
 export function trigger(
 	simpleEventToken: string,
-	url: string
 ): void {
 
 	let payload: ISimpleEventData = {
 		property: resolvePropertyToken(),
 		simpleEventToken,
-		url,
-		userId: resolveUserId(),
+		userId: "",
 		newUser: false,
 		returningUser: false,
 		newSession: false,
@@ -26,7 +24,11 @@ export function trigger(
 		browserName: resolveBrowser(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
+		url: window.location.href
 	};
+
+	if (isDevelopmentMode())
+		console.log(`Simple event data: ${payload}`);
 
 	executePostPayload<ISimpleEventData>(
 		SIMPLE_EVENT_API_URL,
@@ -40,7 +42,7 @@ export function trigger(
 			if (isDevelopmentMode()) console.log(`event ${simpleEventToken} logged successfully`);
 		},
 		(error: string): void => {
-			if (isDevelopmentMode()) console.log(`error: ${error}`);
+			if (isDevelopmentMode()) console.log(`event log error: ${error}`);
 		},
 		(): void => {
 		}
