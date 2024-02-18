@@ -1,12 +1,11 @@
-import {executePostPayload} from "../transmission/transmission";
-import {HTTP_HEADERS, ADD_SIMPLE_EVENT_API} from "../support/request-mapper";
 import {ISimpleEventData} from "./interface/simple-event-payload";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
+import {logSimpleEvent} from "../transmission/simple-event-transmission";
 
-export function trigger(
+export function resolveSimpleEvent(
 	eventToken: string,
 ): void {
 
@@ -30,10 +29,8 @@ export function trigger(
 	if (isDevelopmentMode())
 		console.log(`Simple event data: ${payload}`);
 
-	executePostPayload<ISimpleEventData>(
-		ADD_SIMPLE_EVENT_API,
+	logSimpleEvent(
 		payload,
-		HTTP_HEADERS,
 		(): void => {
 		},
 		(response: ITransmissionResponse): void => {

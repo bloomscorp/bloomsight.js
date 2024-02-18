@@ -1,14 +1,13 @@
 import {isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
-import {executePostPayload} from "../transmission/transmission";
-import {HTTP_HEADERS, ADD_PAGE_VIEW_EVENT_API} from "../support/request-mapper";
-import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {IPageViewEventData} from "./interface/page-view-event-payload";
 import {IUTMData} from "./interface/utm-data";
+import {logPageViewEvent} from "../transmission/page-view-event-transmission";
+import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {store} from "../utils/session-storage";
 
-export function trigger(
+export function resolvePageViewEvent(
 	utmInfo: IUTMData
 ): void {
 
@@ -35,10 +34,8 @@ export function trigger(
 	if (isDevelopmentMode())
 		console.log(`Page view data: ${payload}`);
 
-	executePostPayload<IPageViewEventData>(
-		ADD_PAGE_VIEW_EVENT_API,
+	logPageViewEvent(
 		payload,
-		HTTP_HEADERS,
 		(): void => {
 		},
 		(response: ITransmissionResponse): void => {
@@ -51,6 +48,5 @@ export function trigger(
 		},
 		(): void => {
 			store('startUrl', window.location.href);
-		}
-	);
+		});
 }
