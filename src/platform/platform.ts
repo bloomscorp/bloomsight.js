@@ -1,8 +1,21 @@
 import {IBrowser} from "./constant/browser";
 import {IOperatingSystem} from "./constant/operating-system";
 import {IDevice} from "./constant/device";
+import {isDevelopmentMode} from "../configuration/configuration";
 
 const _userAgent: string = window.navigator.userAgent;
+
+export function initPlatform(): void {
+	const browser: string = resolveBrowser();
+	const os: string = resolveOS();
+	const device: string = resolveDevice();
+
+	if (!isDevelopmentMode()) return;
+
+	console.log(`browser: ${browser}`);
+	console.log(`os: ${os}`);
+	console.log(`device: ${device}`);
+}
 
 export function resolveBrowser(): IBrowser | string {
 

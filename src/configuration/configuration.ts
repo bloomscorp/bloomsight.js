@@ -6,6 +6,10 @@ export function initConfig(appConfig: IConfig): void {
 	config = appConfig
 }
 
+export function isConfiguredProperly(): boolean {
+	return !!resolvePropertyToken();
+}
+
 export function resolvePropertyToken(): string {
 	return config ? config.propertyToken : '';
 }

@@ -2,7 +2,7 @@ import {retrieve, store} from "../utils/session-storage";
 import {ILocationInfo} from "./interface/location-info";
 import {isDevelopmentMode} from "../configuration/configuration";
 
-export function init(): void {
+export function initLocation(): void {
 
 	const locationInfo: ILocationInfo = {} as ILocationInfo // TODO: implement
 
