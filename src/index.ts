@@ -3,6 +3,7 @@ import {initLocation} from "./location/location";
 import {isConfiguredProperly} from "./configuration/configuration";
 import {initUser} from "./user/user";
 import {initSession} from "./session/session";
+import {initPageViewEventHandler} from "./event/page-event";
 
 (function init(): void {
 
@@ -15,4 +16,5 @@ import {initSession} from "./session/session";
 	initLocation();
 	initUser();
 	initSession();
+	initPageViewEventHandler();
 })();

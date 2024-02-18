@@ -6,6 +6,15 @@ import {IUTMData} from "./interface/utm-data";
 import {logPageViewEvent} from "../transmission/page-view-event-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {store} from "../utils/session-storage";
+import {resolveUTMData} from "../utils/utm-resolver";
+
+export function initPageViewEventHandler(): void {
+	window.addEventListener("load", (): void => {
+		resolvePageViewEvent(
+			resolveUTMData(window.location.href)
+		);
+	})
+}
 
 export function resolvePageViewEvent(
 	utmInfo: IUTMData
