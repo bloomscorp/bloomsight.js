@@ -1,5 +1,5 @@
 import {executePostPayload} from "../transmission/transmission";
-import {HTTP_HEADERS, SIMPLE_EVENT_API_URL} from "../support/request-mapper";
+import {HTTP_HEADERS, ADD_SIMPLE_EVENT_API} from "../support/request-mapper";
 import {ISimpleEventData} from "./interface/simple-event-payload";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
@@ -7,12 +7,12 @@ import {isDevelopmentMode, resolvePropertyToken} from "../configuration/configur
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 
 export function trigger(
-	simpleEventToken: string,
+	eventToken: string,
 ): void {
 
-	let payload: ISimpleEventData = {
+	const payload: ISimpleEventData = {
 		property: resolvePropertyToken(),
-		simpleEventToken,
+		simpleEventToken: eventToken,
 		userId: "",
 		newUser: false,
 		returningUser: false,
@@ -24,14 +24,14 @@ export function trigger(
 		browserName: resolveBrowser(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
-		url: window.location.href
+		url: window.location.href || ''
 	};
 
 	if (isDevelopmentMode())
 		console.log(`Simple event data: ${payload}`);
 
 	executePostPayload<ISimpleEventData>(
-		SIMPLE_EVENT_API_URL,
+		ADD_SIMPLE_EVENT_API,
 		payload,
 		HTTP_HEADERS,
 		(): void => {
@@ -39,7 +39,7 @@ export function trigger(
 		(response: ITransmissionResponse): void => {
 		},
 		(response: ITransmissionResponse): void => {
-			if (isDevelopmentMode()) console.log(`event ${simpleEventToken} logged successfully`);
+			if (isDevelopmentMode()) console.log(`event ${eventToken} logged successfully`);
 		},
 		(error: string): void => {
 			if (isDevelopmentMode()) console.log(`event log error: ${error}`);

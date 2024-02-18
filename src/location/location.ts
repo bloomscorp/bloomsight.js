@@ -2,6 +2,11 @@ import {retrieve, store} from "../utils/session-storage";
 import {ILocationInfo} from "./interface/location-info";
 import {isDevelopmentMode} from "../configuration/configuration";
 
+const LOCATION_IP_KEY: string = 'ip';
+const LOCATION_CITY_KEY: string = 'city';
+const LOCATION_REGION_KEY: string = 'region';
+const LOCATION_COUNTRY_KEY: string = 'country';
+
 export function initLocation(): void {
 
 	const locationInfo: ILocationInfo = {} as ILocationInfo // TODO: implement
@@ -10,10 +15,10 @@ export function initLocation(): void {
 }
 
 function saveLocationInfoToSessionStorage(info: ILocationInfo): void {
-	store('ip', info.ip);
-	store('country', info.country);
-	store('region', info.region);
-	store('city', info.city);
+	store(LOCATION_IP_KEY, info.ip);
+	store(LOCATION_CITY_KEY, info.city);
+	store(LOCATION_REGION_KEY, info.region);
+	store(LOCATION_COUNTRY_KEY, info.country);
 
 	if (!isDevelopmentMode()) return;
 
@@ -24,17 +29,17 @@ function saveLocationInfoToSessionStorage(info: ILocationInfo): void {
 }
 
 export function resolveIPAddress(): string {
-	return retrieve('ip');
+	return retrieve(LOCATION_IP_KEY);
 }
 
 export function resolveCountry(): string {
-	return retrieve('country');
+	return retrieve(LOCATION_COUNTRY_KEY);
 }
 
 export function resolveRegion(): string {
-	return retrieve('region');
+	return retrieve(LOCATION_REGION_KEY);
 }
 
 export function resolveCity(): string {
-	return retrieve('city');
+	return retrieve(LOCATION_CITY_KEY);
 }
