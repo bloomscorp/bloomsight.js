@@ -4,10 +4,13 @@ import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {logSimpleEvent} from "../transmission/simple-event-transmission";
+import {isBot} from "../utils/bot-handler";
 
 export function resolveSimpleEvent(
 	eventToken: string,
 ): void {
+
+	if (isBot()) config!.stopAll = true;
 
 	if (config?.stopAll || config?.stopSimpleEvent) return;
 

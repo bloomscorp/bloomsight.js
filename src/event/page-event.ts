@@ -7,6 +7,7 @@ import {logPageViewEvent} from "../transmission/page-view-event-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {store} from "../utils/session-storage";
 import {resolveUTMData} from "../utils/utm-resolver";
+import {isBot} from "../utils/bot-handler";
 
 export function initPageViewEventHandler(): void {
 	window.addEventListener("load", (): void => {
@@ -19,6 +20,8 @@ export function initPageViewEventHandler(): void {
 export function resolvePageViewEvent(
 	utmInfo: IUTMData
 ): void {
+
+	if (isBot()) config!.stopAll = true;
 
 	if (config?.stopAll || config?.stopPageViewEvent) return;
 
