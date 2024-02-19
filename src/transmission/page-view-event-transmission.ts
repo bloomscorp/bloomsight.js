@@ -1,10 +1,10 @@
 import {executePostPayload} from "./transmission";
-import {IPageViewEventData} from "../event/interface/page-view-event-payload";
+import {IPageViewEventPayload} from "../event/interface/page-view-event-payload";
 import {ADD_PAGE_VIEW_EVENT_API, HTTP_HEADERS} from "../support/request-mapper";
 import {ITransmissionResponse} from "./interface/transmission-response";
 
 export function logPageViewEvent(
-	payload: IPageViewEventData,
+	payload: IPageViewEventPayload,
 	onPreExecute: () => void,
 	onPostExecute: (response: ITransmissionResponse) => void,
 	onSuccess: (response: ITransmissionResponse) => void,
@@ -12,7 +12,7 @@ export function logPageViewEvent(
 	onComplete: () => void,
 ): void {
 
-	executePostPayload<IPageViewEventData>(
+	executePostPayload<IPageViewEventPayload>(
 		ADD_PAGE_VIEW_EVENT_API,
 		payload,
 		HTTP_HEADERS,

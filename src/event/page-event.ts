@@ -1,7 +1,7 @@
 import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
-import {IPageViewEventData} from "./interface/page-view-event-payload";
+import {IPageViewEventPayload} from "./interface/page-view-event-payload";
 import {IUTMData} from "./interface/utm-data";
 import {logPageViewEvent} from "../transmission/page-view-event-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
@@ -17,7 +17,7 @@ export function initPageViewEventHandler(): void {
 	})
 }
 
-export function resolvePageViewEvent(
+function resolvePageViewEvent(
 	utmInfo: IUTMData
 ): void {
 
@@ -25,7 +25,7 @@ export function resolvePageViewEvent(
 
 	if (config?.stopAll || config?.stopPageViewEvent) return;
 
-	const payload: IPageViewEventData = {
+	const payload: IPageViewEventPayload = {
 		property: resolvePropertyToken(),
 		userId: "",
 		referredUrl: '',

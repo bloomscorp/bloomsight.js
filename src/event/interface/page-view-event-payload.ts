@@ -1,4 +1,4 @@
-export interface IPageViewEventData {
+export interface IPageViewEventPayload {
 	property: string;
 	url: string;
 	title: string;

@@ -1,4 +1,4 @@
-import {ISimpleEventData} from "./interface/simple-event-payload";
+import {ISimpleEventPayload} from "./interface/simple-event-payload";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
@@ -14,7 +14,7 @@ export function resolveSimpleEvent(
 
 	if (config?.stopAll || config?.stopSimpleEvent) return;
 
-	const payload: ISimpleEventData = {
+	const payload: ISimpleEventPayload = {
 		property: resolvePropertyToken(),
 		simpleEventToken: eventToken,
 		userId: "",

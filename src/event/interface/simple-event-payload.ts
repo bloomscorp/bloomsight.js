@@ -1,4 +1,4 @@
-export interface ISimpleEventData {
+export interface ISimpleEventPayload {
 	property: string;
 	simpleEventToken: string;
 	userId: string;
