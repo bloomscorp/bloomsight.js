@@ -1,4 +1,4 @@
-import {isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
+import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {IPageViewEventData} from "./interface/page-view-event-payload";
@@ -19,6 +19,8 @@ export function initPageViewEventHandler(): void {
 export function resolvePageViewEvent(
 	utmInfo: IUTMData
 ): void {
+
+	if (config?.stopAll || config?.stopPageViewEvent) return;
 
 	const payload: IPageViewEventData = {
 		property: resolvePropertyToken(),

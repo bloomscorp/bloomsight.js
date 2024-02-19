@@ -1,13 +1,15 @@
 import {ISimpleEventData} from "./interface/simple-event-payload";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
-import {isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
+import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {logSimpleEvent} from "../transmission/simple-event-transmission";
 
 export function resolveSimpleEvent(
 	eventToken: string,
 ): void {
+
+	if (config?.stopAll || config?.stopSimpleEvent) return;
 
 	const payload: ISimpleEventData = {
 		property: resolvePropertyToken(),
