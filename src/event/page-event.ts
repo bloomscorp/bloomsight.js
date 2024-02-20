@@ -5,19 +5,45 @@ import {IPageViewEventPayload} from "./interface/page-view-event-payload";
 import {IUTMData} from "./interface/utm-data";
 import {logPageViewEvent} from "../transmission/page-view-event-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
-import {store} from "../utils/session-storage";
+import {retrieve, store} from "../utils/session-storage";
 import {resolveUTMData} from "../utils/utm-resolver";
 import {isBot} from "../utils/bot-handler";
+import {isNewUser, resolveUserId} from "../user/user";
+import {retrieveEventList, storeEventList} from "./event";
+
+const REFERRED_URL_KEY: string = 'startUrl';
+const PAGEVIEW_EVENT: string = 'SITE_VISITED';
+
+let _hasInitialPageViewOccurred: boolean = false;
+let _debounce: boolean = false;
 
 export function initPageViewEventHandler(): void {
+
 	window.addEventListener("load", (): void => {
-		resolvePageViewEvent(
-			resolveUTMData(window.location.href)
-		);
+		if (!_hasInitialPageViewOccurred) {
+			setTimeout((): void => {
+				resolvePageViewEvent(
+					true,
+					resolveUTMData(window.location.href));
+			}, 1500);
+
+			_hasInitialPageViewOccurred = true;
+		} else {
+			setTimeout((): void => {
+				resolvePageViewEvent(
+					false,
+					resolveUTMData(window.location.href));
+			}, 1500);
+		}
 	})
 }
 
+export function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {
+	return isFirstPageViewOccurrence ? document.referrer : retrieve(REFERRED_URL_KEY);
+}
+
 function resolvePageViewEvent(
+	isFirstPageViewOccurrence: boolean,
 	utmInfo: IUTMData
 ): void {
 
@@ -27,8 +53,8 @@ function resolvePageViewEvent(
 
 	const payload: IPageViewEventPayload = {
 		property: resolvePropertyToken(),
-		userId: "",
-		referredUrl: '',
+		userId: resolveUserId(),
+		referredUrl: resolveReferredUrlFromSession(isFirstPageViewOccurrence),
 		ipAddress: resolveIPAddress(),
 		city: resolveCity(),
 		countryCode: resolveCountry(),
@@ -44,6 +70,26 @@ function resolvePageViewEvent(
 		utmSource: utmInfo.utmSource,
 		utmTerm: utmInfo.utmTerm
 	};
+
+	let previouslyTriggeredEventList: string[] = retrieveEventList();
+
+	if (!previouslyTriggeredEventList ||
+		!previouslyTriggeredEventList.includes(PAGEVIEW_EVENT)
+	) {
+		if (isNewUser) {
+			payload.newUser = true;
+		} else {
+			payload.returningUser = true;
+		}
+
+		payload.newSession = true;
+		storeEventList([...previouslyTriggeredEventList, PAGEVIEW_EVENT]);
+	}
+
+	if (!isFirstPageViewOccurrence && !_debounce) {
+		_debounce = true;
+		payload.debounce = true;
+	}
 
 	if (isDevelopmentMode())
 		console.log(`Page view data: ${payload}`);
@@ -64,3 +110,4 @@ function resolvePageViewEvent(
 			store('startUrl', window.location.href);
 		});
 }
+
