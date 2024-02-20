@@ -5,6 +5,7 @@ import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {logSimpleEvent} from "../transmission/simple-event-transmission";
 import {isBot} from "../utils/bot-handler";
+import {resolveUserId} from "../user/user";
 
 export function resolveSimpleEvent(
 	eventToken: string,
@@ -17,7 +18,7 @@ export function resolveSimpleEvent(
 	const payload: ISimpleEventPayload = {
 		property: resolvePropertyToken(),
 		simpleEventToken: eventToken,
-		userId: "",
+		userId: resolveUserId(),
 		newUser: false,
 		returningUser: false,
 		newSession: false,

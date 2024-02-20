@@ -5,6 +5,7 @@ import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {IDataEventPayload} from "./interface/data-event-payload";
 import {logDataEvent} from "../transmission/data-event-transmission";
+import {resolveUserId} from "../user/user";
 
 export function resolveDataEvent(
 	eventToken: string,
@@ -19,7 +20,7 @@ export function resolveDataEvent(
 		property: resolvePropertyToken(),
 		dataEventToken: eventToken,
 		eventLogData: eventData,
-		userId: "",
+		userId: resolveUserId(),
 		newUser: false,
 		returningUser: false,
 		newSession: false,
