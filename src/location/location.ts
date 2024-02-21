@@ -1,6 +1,7 @@
 import {retrieve, store} from "../utils/session-storage";
 import {ILocationInfo} from "./interface/location-info";
 import {isDevelopmentMode} from "../configuration/configuration";
+import {resolveLocation} from "../transmission/location-transmission";
 
 const LOCATION_IP_KEY: string = 'ip';
 const LOCATION_CITY_KEY: string = 'city';
@@ -9,9 +10,17 @@ const LOCATION_COUNTRY_KEY: string = 'country';
 
 export function initLocation(): void {
 
-	const locationInfo: ILocationInfo = {} as ILocationInfo // TODO: implement
-
-	saveLocationInfoToSessionStorage(locationInfo);
+	resolveLocation(
+		(): void => {},
+		(response: ILocationInfo): void => {},
+		(response: ILocationInfo): void => {
+			saveLocationInfoToSessionStorage(response);
+		},
+		(error: string): void => {
+			if (isDevelopmentMode()) console.log(`Failed to resolve location: ${error}`)
+		},
+		(): void => {}
+	)
 }
 
 function saveLocationInfoToSessionStorage(info: ILocationInfo): void {

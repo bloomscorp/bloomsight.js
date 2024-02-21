@@ -2,7 +2,7 @@ import {ITransmissionResponse} from "./interface/transmission-response";
 import {isEmptyString} from "bmx-pastebox";
 import {RESOURCE_VALIDATION_ERROR} from "../support/message";
 
-export function executeBasicGet<T>(
+export function executeBasicGet(
 	url: string,
 	headers: Headers | undefined,
 	onPreExecute: () => void,
@@ -24,6 +24,39 @@ export function executeBasicGet<T>(
 				onPostExecute(response.message);
 				if (response.success) onSuccess(response.message);
 				else onFailure(RESOURCE_VALIDATION_ERROR);
+			}
+		)
+		.catch(
+			(error): void => onFailure(error.toString())
+		)
+		.finally(
+			(): void => onComplete()
+		);
+}
+
+export function executeGetPayload<T extends ITransmissionResponse, S>(
+	url: string,
+	headers: Headers | undefined,
+	onPreExecute: () => void,
+	onPostExecute: (response: S) => void,
+	onSuccess: (response: S) => void,
+	onFailure: (error: string) => void,
+	onComplete: () => void,
+	payloadKey: string
+): void {
+
+	onPreExecute();
+
+	fetch(url, {
+		method: 'GET',
+		headers,
+	})
+		.then((response: Response) => response.json() as PromiseLike<T>)
+		.then(
+			(response: T): void => {
+				onPostExecute(response[payloadKey]);
+				if (response.success) onSuccess(response[payloadKey]);
+				else onFailure(isEmptyString(response.message) ? RESOURCE_VALIDATION_ERROR : response.message);
 			}
 		)
 		.catch(
