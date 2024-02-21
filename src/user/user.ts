@@ -41,9 +41,13 @@ export function resolveUserId(): string {
 	else return retrieveUserId();
 }
 
-export function setUserStatus(sessionEndTimeInMilliseconds: number): void {
+export function hasUserReturnedUnderNewUserTenureLimit(sessionEndTimeInMilliseconds: number): boolean {
 	const elapsedTimeAfterSessionExpiredInMilliseconds: number = Date.now() - sessionEndTimeInMilliseconds;
 	const allowedUserTenureInMilliseconds: number = NEW_USER_TENURE_IN_DAYS * (24 * 60 * 60 * 1000);
 
-	isNewUser = elapsedTimeAfterSessionExpiredInMilliseconds > allowedUserTenureInMilliseconds;
+	return elapsedTimeAfterSessionExpiredInMilliseconds > allowedUserTenureInMilliseconds;
+}
+
+export function setUserStatus(isNew: boolean): void {
+	isNewUser = isNew;
 }

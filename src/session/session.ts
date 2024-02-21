@@ -1,33 +1,35 @@
 import {retrieve} from "../utils/local-storage";
 import {storeEventList} from "../event/event";
-import {setUserStatus} from "../user/user";
+import {hasUserReturnedUnderNewUserTenureLimit, setUserStatus} from "../user/user";
 import {store} from "../utils/session-storage";
 
 const SESSION_ID_KEY: string = "sessionEnd";
 const SESSION_TENURE_IN_MINUTES: number = 30;
 const SESSION_OBSERVER_COOLING_PERIOD_IN_MINUTES: number = 1;
 
-let lastTriggerTimeInMilliseconds: number = Date.now();
+let _lastTriggerTimeInMilliseconds: number = Date.now();
 
 export function initSession(): void {
 	const lastSessionEndingTimeInMilliseconds: number = retrieveSessionEndTime();
 
 	if (lastSessionEndingTimeInMilliseconds) {
 		if (Date.now() > lastSessionEndingTimeInMilliseconds) {
-			setUserStatus(lastSessionEndingTimeInMilliseconds);
+			setUserStatus(
+				hasUserReturnedUnderNewUserTenureLimit(lastSessionEndingTimeInMilliseconds)
+			);
 			restartSession(true);
 		} else {
-			setUserStatus(0);
+			setUserStatus(true);
 		}
 	} else {
-		setUserStatus(0);
+		setUserStatus(true);
 		restartSession(true);
 	}
 
-	attachSessionObserver();
+	initSessionObserver();
 }
 
-function attachSessionObserver(): void {
+function initSessionObserver(): void {
 	window.addEventListener('keydown', () => throttle());
 	window.addEventListener('mousemove', () => throttle());
 	window.addEventListener('click', () => throttle());
@@ -36,13 +38,13 @@ function attachSessionObserver(): void {
 }
 
 function throttle(): void{
-	const coolingPeriodEndTimeInMilliseconds: number = lastTriggerTimeInMilliseconds + (SESSION_OBSERVER_COOLING_PERIOD_IN_MINUTES * 60 * 1000);
+	const coolingPeriodEndTimeInMilliseconds: number = _lastTriggerTimeInMilliseconds + (SESSION_OBSERVER_COOLING_PERIOD_IN_MINUTES * 60 * 1000);
 	const elapsedTimeAfterLastTriggerHappenedInMilliseconds: number = coolingPeriodEndTimeInMilliseconds - Date.now();
 	const hasReTriggerHappenedAfterCoolingPeriod: boolean = elapsedTimeAfterLastTriggerHappenedInMilliseconds < 0;
 
 	if (hasReTriggerHappenedAfterCoolingPeriod) {
 		updateSession();
-		lastTriggerTimeInMilliseconds = Date.now();
+		_lastTriggerTimeInMilliseconds = Date.now();
 	}
 }
 
@@ -50,7 +52,7 @@ function updateSession(): void {
 	const previousSessionEndingTimeInSeconds: number = retrieveSessionEndTime();
 
 	if (Date.now() > previousSessionEndingTimeInSeconds) {
-		setUserStatus(previousSessionEndingTimeInSeconds);
+		setUserStatus(false);
 		restartSession(true);
 	} else {
 		restartSession(false);
