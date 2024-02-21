@@ -42,7 +42,7 @@ export function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean
 	return isFirstPageViewOccurrence ? document.referrer : retrieve(REFERRED_URL_KEY);
 }
 
-function resolvePageViewEvent(
+export function resolvePageViewEvent(
 	isFirstPageViewOccurrence: boolean,
 	utmInfo: IUTMData
 ): void {
