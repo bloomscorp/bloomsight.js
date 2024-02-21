@@ -9,7 +9,7 @@
 	"scripts": {
 		"prepare": "husky",
 		"lint": "tsc",
-		"build": "tsup src/index.ts --format esm,cjs --dts --treeshake --minify terser",
+		"build": "tsup",
 		"release": "release-it"
 	},
 	"keywords": [
