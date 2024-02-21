@@ -5,7 +5,8 @@ import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {logSimpleEvent} from "../transmission/simple-event-transmission";
 import {isBot} from "../utils/bot-handler";
-import {resolveUserId} from "../user/user";
+import {isNewUser, resolveUserId} from "../user/user";
+import {retrieveEventList, storeEventList} from "./event";
 
 export function resolveSimpleEvent(
 	eventToken: string,
@@ -31,6 +32,21 @@ export function resolveSimpleEvent(
 		deviceType: resolveDevice(),
 		url: window.location.href || ''
 	};
+
+	const previouslyTriggeredEventList: string[] = retrieveEventList();
+
+	if (!previouslyTriggeredEventList ||
+		!previouslyTriggeredEventList.includes(eventToken)
+	) {
+		if (isNewUser) {
+			payload.newUser = true;
+		} else {
+			payload.returningUser = true;
+		}
+
+		payload.newSession = true;
+		storeEventList([...previouslyTriggeredEventList, eventToken]);
+	}
 
 	if (isDevelopmentMode())
 		console.log(`Simple event data: ${payload}`);

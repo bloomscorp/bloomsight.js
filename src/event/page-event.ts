@@ -71,7 +71,7 @@ function resolvePageViewEvent(
 		utmTerm: utmInfo.utmTerm
 	};
 
-	let previouslyTriggeredEventList: string[] = retrieveEventList();
+	const previouslyTriggeredEventList: string[] = retrieveEventList();
 
 	if (!previouslyTriggeredEventList ||
 		!previouslyTriggeredEventList.includes(PAGEVIEW_EVENT)
