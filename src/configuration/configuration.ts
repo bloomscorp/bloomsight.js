@@ -6,11 +6,16 @@ const defaultConfig: Partial<IConfig> = {
 	stopSimpleEvent: false,
 	stopDataEvent: false,
 	stopPageViewEvent: false,
-	stopAll: false
+	stopAll: false,
+	logOnly: false
 }
 
 export function initConfig(appConfig: IConfig): void {
 	config = {...defaultConfig, ...appConfig};
+
+	if (isDevelopmentMode()) {
+		console.log(`configuration: ${config}`);
+	}
 }
 
 export function isConfiguredProperly(): boolean {

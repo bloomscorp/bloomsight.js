@@ -2,6 +2,7 @@ import {executePostPayload} from "./transmission";
 import {IPageViewEventPayload} from "../event/interface/page-view-event-payload";
 import {ADD_PAGE_VIEW_EVENT_API, HTTP_HEADERS} from "../support/request-mapper";
 import {ITransmissionResponse} from "./interface/transmission-response";
+import {config} from "../configuration/configuration";
 
 export function logPageViewEvent(
 	payload: IPageViewEventPayload,
@@ -11,6 +12,8 @@ export function logPageViewEvent(
 	onFailure: (error: string) => void,
 	onComplete: () => void,
 ): void {
+
+	if (config?.logOnly) return;
 
 	executePostPayload<IPageViewEventPayload>(
 		ADD_PAGE_VIEW_EVENT_API,
