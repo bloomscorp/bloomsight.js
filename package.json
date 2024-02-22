@@ -10,6 +10,7 @@
 		"prepare": "husky",
 		"lint": "tsc",
 		"build": "tsup",
+		"bundle": "webpack --mode production",
 		"release": "release-it"
 	},
 	"keywords": [
@@ -45,8 +46,12 @@
 		"husky": "^9.0.10",
 		"release-it": "^17.0.3",
 		"terser": "^5.27.0",
+		"timers-browserify": "^2.0.12",
+		"ts-loader": "^9.5.1",
 		"tsup": "^8.0.1",
-		"typescript": "^5.3.3"
+		"typescript": "^5.3.3",
+		"webpack": "^5.90.3",
+		"webpack-cli": "^5.1.4"
 	},
 	"dependencies": {
 		"bmx-pastebox": "^1.0.14"

@@ -23,7 +23,7 @@ Use the `init` method to configure the library.
 
 For ESModule projects
 ```ts
-import { init } from '@bloomscorp/bloomsight.js';
+import {init} from '@bloomscorp/bloomsight.js';
 
 init({
    propertyToken: '65d72f0b5e990c6028790156', 
@@ -34,7 +34,7 @@ init({
 
 For CommonJS projects
 ```ts
-const { init } = require('@bloomscorp/bloomsight.js');
+const {init} = require('@bloomscorp/bloomsight.js');
 
 init({
    propertyToken: '65d72f0b5e990c6028790156', 
