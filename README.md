@@ -11,7 +11,7 @@ A client side javascript library to work with bloomsight.io
 Install by running
 
 ```bash
-  npm install @bloomscorp/bloomsight.js
+npm install @bloomscorp/bloomsight.js
 ```
 
 ## Usage/Examples
@@ -26,9 +26,9 @@ For ESModule projects
 import { init } from '@bloomscorp/bloomsight.js';
 
 init({
-	propertyToken: '65d72f0b5e990c6028790156',
-	isDevelopmentMode: true,
-	...
+   propertyToken: '65d72f0b5e990c6028790156', 
+   isDevelopmentMode: true,
+   ...
 });
 ```
 
@@ -37,9 +37,9 @@ For CommonJS projects
 const { init } = require('@bloomscorp/bloomsight.js');
 
 init({
-	propertyToken: '65d72f0b5e990c6028790156',
-	isDevelopmentMode: true,
-	...
+   propertyToken: '65d72f0b5e990c6028790156', 
+   isDevelopmentMode: true,
+   ...
 });
 ```
 Below is the table with all the possible options that can be configured.
@@ -61,7 +61,7 @@ Below is the table with all the possible options that can be configured.
 Use the `resolveSimpleEvent` method to log simple events
 
 ```ts
-import { resolveSimpleEvent } from '@bloomscorp/bloomsight.js';
+import {resolveSimpleEvent} from '@bloomscorp/bloomsight.js';
 
 resolveSimpleEvent('65d735b122354c8ba6a489c2');
 ```
@@ -71,11 +71,11 @@ resolveSimpleEvent('65d735b122354c8ba6a489c2');
 Use the `resolveDataEvent` method to log data events
 
 ```ts
-import { resolveDataEvent } from '@bloomscorp/bloomsight.js';
+import {resolveDataEvent} from '@bloomscorp/bloomsight.js';
 
 resolveDataEvent('66d735b122355c8ba6a456f8'), {
   productId: 120,
-  sku: 'PROD021298
+  sku: 'PROD021298'
 };
 ```
 ### Page View Event
