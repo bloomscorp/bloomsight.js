@@ -8,15 +8,17 @@ import {initConfig} from "./configuration/configuration";
 
 function init(appConfig: IConfig): void {
 	initConfig(appConfig);
+	
+	initLocation((): void => {
+			initPlatform();
+			initUser();
+			initSession();
 
-	initPlatform();
-	initLocation();
-	initUser();
-	initSession();
-
-	if (appConfig.observePageViaWebAPI) {
-		initPageViewEventHandler();
-	}
+			if (appConfig.observePageViaWebAPI) {
+				initPageViewEventHandler();
+			}
+		}
+	);
 }
 
 export {init};

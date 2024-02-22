@@ -23,12 +23,10 @@ export function initPageViewEventHandler(): void {
 
 export function pageViewObserver(): void {
 	if (!_hasInitialPageViewOccurred) {
-		// TODO: try to remove setTimeout
-		setTimeout((): void => {
-			resolvePageViewEvent(
-				true,
-				resolveUTMData(window.location.href));
-		}, 1500);
+		resolvePageViewEvent(
+			true,
+			resolveUTMData(window.location.href)
+		);
 
 		_hasInitialPageViewOccurred = true;
 	} else {

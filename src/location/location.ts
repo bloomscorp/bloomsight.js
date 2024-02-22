@@ -8,7 +8,7 @@ const LOCATION_CITY_KEY: string = 'city';
 const LOCATION_REGION_KEY: string = 'region';
 const LOCATION_COUNTRY_KEY: string = 'country';
 
-export function initLocation(): void {
+export function initLocation(callback: () => void): void {
 
 	resolveLocation(
 		(): void => {},
@@ -19,7 +19,9 @@ export function initLocation(): void {
 		(error: string): void => {
 			if (isDevelopmentMode()) console.log(`failed to resolve location: ${error}`)
 		},
-		(): void => {}
+		(): void => {
+			callback();
+		}
 	)
 }
 
