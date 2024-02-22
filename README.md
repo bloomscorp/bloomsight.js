@@ -8,10 +8,17 @@ A client side javascript library to work with bloomsight.io
 
 ## Installation
 
-Install by running
+Install using `npm` by running
 
 ```bash
 npm install @bloomscorp/bloomsight.js
+```
+OR
+
+Use our CDN url without installation. Make sure to change `<VERSION>` with appropriate release 
+version of the library
+```
+https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js
 ```
 
 ## Usage/Examples

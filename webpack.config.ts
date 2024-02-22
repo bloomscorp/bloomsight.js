@@ -1,7 +1,5 @@
 const {resolve} = require("path");
 
-const pkg = require("./package.json");
-
 module.exports = {
 	entry: "./src/index.ts",
 	module: {
@@ -24,7 +22,7 @@ module.exports = {
 		contentBase: "./dist",
 	},
 	output: {
-		filename: `bloomsight@${pkg.version}.js`,
+		filename: `production.js`,
 		path: resolve(__dirname, 'umd')
 	}
 };

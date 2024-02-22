@@ -11,7 +11,7 @@
 		"lint": "tsc",
 		"build": "tsup",
 		"bundle": "webpack --mode production",
-		"release": "release-it"
+		"release": "npm run bundle && release-it"
 	},
 	"keywords": [
 		"bloomsight.io",
