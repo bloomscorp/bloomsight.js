@@ -7,14 +7,15 @@ const defaultConfig: Partial<IConfig> = {
 	stopDataEvent: false,
 	stopPageViewEvent: false,
 	stopAll: false,
-	logOnly: false
+	logOnly: false,
+	observePageViaWebAPI: true
 }
 
 export function initConfig(appConfig: IConfig): void {
 	config = {...defaultConfig, ...appConfig};
 
 	if (isDevelopmentMode()) {
-		console.log(`configuration: ${config}`);
+		console.log('configuration: ', config);
 	}
 }
 
