@@ -1,5 +1,17 @@
 
 
+## [0.1.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.0...v0.1.1) (2024-02-22)
+
+
+### Bug Fixes
+
+* remove setTimeout for page view ([5c24e83](https://github.com/bloomscorp/bloomsight.js/commit/5c24e83bf1e5d335256ab590e63c8f0e8bd175fe))
+
+
+### Performance Improvements
+
+* change `sourcemap`` to `false` to reduce overall size ([88436b6](https://github.com/bloomscorp/bloomsight.js/commit/88436b6adabf75f45cb9259869f25f8bd0fe88fb))
+
 # 0.1.0 (2024-02-22)
 
 
