@@ -3,14 +3,17 @@
 		"before:init": [
 			"git pull",
 			"npm run lint",
-			"npm run build"
+			"npm run build",
+			"npm run bundle",
+			"git add --all"
 		]
 	},
 	"git": {
 		"commitMessage": "chore: release v${version}",
 		"tagName": "v${version}",
 		"requireBranch": "main",
-		"requireUpstream": false
+		"requireUpstream": false,
+		"requireCleanWorkingDir": false
 	},
 	"github": {
 		"release": true,

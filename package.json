@@ -1,6 +1,6 @@
 {
 	"name": "@bloomscorp/bloomsight.js",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "A client side javascript library to work with bloomsight.io",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
@@ -11,7 +11,7 @@
 		"lint": "tsc",
 		"build": "tsup",
 		"bundle": "webpack --mode production",
-		"release": "npm run bundle && release-it"
+		"release": "release-it"
 	},
 	"keywords": [
 		"bloomsight.io",

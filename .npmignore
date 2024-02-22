@@ -4,6 +4,7 @@
 /.idea
 /docs
 /demo
+/umd
 
 commitlint.config.js
 .editorconfig
@@ -13,3 +14,4 @@ commitlint.config.js
 .release-it.json
 tsconfig.json
 tsup.config.ts
+webpack.config.ts
