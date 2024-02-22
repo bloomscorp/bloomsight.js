@@ -96,6 +96,9 @@ export function resolvePageViewEvent(
 	if (isDevelopmentMode())
 		console.log('page view data: ', payload);
 
+	if (config?.logOnly)
+		store('startUrl', window.location.href);
+
 	logPageViewEvent(
 		payload,
 		(): void => {
