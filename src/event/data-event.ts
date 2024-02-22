@@ -32,6 +32,7 @@ export function resolveDataEvent(
 		url: window.location.href || '',
 	};
 
+	// TODO: re-think this implementation
 	const previouslyTriggeredEventList: string[] = retrieveEventList();
 
 	if (!previouslyTriggeredEventList ||
@@ -48,7 +49,7 @@ export function resolveDataEvent(
 	}
 
 	if (isDevelopmentMode())
-		console.log(`Data event data: ${payload}`);
+		console.log('data event data: ', payload);
 
 	logDataEvent(
 		payload,

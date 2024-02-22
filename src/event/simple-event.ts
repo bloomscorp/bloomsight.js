@@ -30,6 +30,7 @@ export function resolveSimpleEvent(
 		url: window.location.href || ''
 	};
 
+	// TODO: re-think this implementation
 	const previouslyTriggeredEventList: string[] = retrieveEventList();
 
 	if (!previouslyTriggeredEventList ||
@@ -46,7 +47,7 @@ export function resolveSimpleEvent(
 	}
 
 	if (isDevelopmentMode())
-		console.log(`Simple event data: ${payload}`);
+		console.log('simple event data: ', payload);
 
 	logSimpleEvent(
 		payload,

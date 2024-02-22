@@ -17,7 +17,7 @@ export function initLocation(): void {
 			saveLocationInfoToSessionStorage(response);
 		},
 		(error: string): void => {
-			if (isDevelopmentMode()) console.log(`Failed to resolve location: ${error}`)
+			if (isDevelopmentMode()) console.log(`failed to resolve location: ${error}`)
 		},
 		(): void => {}
 	)

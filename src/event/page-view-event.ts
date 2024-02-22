@@ -18,27 +18,28 @@ let _hasInitialPageViewOccurred: boolean = false;
 let _debounce: boolean = false;
 
 export function initPageViewEventHandler(): void {
-
-	window.addEventListener("load", (): void => {
-		if (!_hasInitialPageViewOccurred) {
-			setTimeout((): void => {
-				resolvePageViewEvent(
-					true,
-					resolveUTMData(window.location.href));
-			}, 1500);
-
-			_hasInitialPageViewOccurred = true;
-		} else {
-			setTimeout((): void => {
-				resolvePageViewEvent(
-					false,
-					resolveUTMData(window.location.href));
-			}, 1500);
-		}
-	})
+	window.addEventListener("load", () => pageViewObserver());
 }
 
-export function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {
+export function pageViewObserver(): void {
+	if (!_hasInitialPageViewOccurred) {
+		// TODO: try to remove setTimeout
+		setTimeout((): void => {
+			resolvePageViewEvent(
+				true,
+				resolveUTMData(window.location.href));
+		}, 1500);
+
+		_hasInitialPageViewOccurred = true;
+	} else {
+		resolvePageViewEvent(
+			false,
+			resolveUTMData(window.location.href)
+		);
+	}
+}
+
+function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {
 	return isFirstPageViewOccurrence ? document.referrer : retrieve(REFERRED_URL_KEY);
 }
 
@@ -71,6 +72,7 @@ export function resolvePageViewEvent(
 		utmTerm: utmInfo.utmTerm
 	};
 
+	// TODO: re-think this implementation
 	const previouslyTriggeredEventList: string[] = retrieveEventList();
 
 	if (!previouslyTriggeredEventList ||
@@ -92,7 +94,7 @@ export function resolvePageViewEvent(
 	}
 
 	if (isDevelopmentMode())
-		console.log(`Page view data: ${payload}`);
+		console.log('page view data: ', payload);
 
 	logPageViewEvent(
 		payload,
