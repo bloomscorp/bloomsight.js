@@ -1,0 +1,15 @@
+/src
+/node_modules
+/.husky
+/.idea
+/docs
+/demo
+
+commitlint.config.js
+.editorconfig
+.DS_Store
+
+.node-version
+.release-it.json
+tsconfig.json
+tsup.config.ts
