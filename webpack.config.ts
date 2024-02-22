@@ -24,7 +24,7 @@ module.exports = {
 		contentBase: "./dist",
 	},
 	output: {
-		filename: `@bloomscorp/bloomsight.js@${pkg.version}.js`,
+		filename: `bloomsight@${pkg.version}.js`,
 		path: resolve(__dirname, 'umd')
 	}
 };
