@@ -60,7 +60,7 @@ Below is the table with all the possible options that can be configured.
 
 Use the `resolveSimpleEvent` method to log simple events
 
-```
+```ts
 import { resolveSimpleEvent } from '@bloomscorp/bloomsight.js';
 
 resolveSimpleEvent('65d735b122354c8ba6a489c2');
@@ -70,7 +70,7 @@ resolveSimpleEvent('65d735b122354c8ba6a489c2');
 
 Use the `resolveDataEvent` method to log data events
 
-```
+```ts
 import { resolveDataEvent } from '@bloomscorp/bloomsight.js';
 
 resolveDataEvent('66d735b122355c8ba6a456f8'), {
@@ -90,7 +90,7 @@ However, frameworks like `Angular`, `React` etc doesn't work that way. So, it is
 
 Here is an example in Angular,
 
-```
+```ts
 import {pageViewObserver} from '@bloomscorp/bloomsight.js';
 
 export class AppComponent implements OnInit{
