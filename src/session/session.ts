@@ -1,6 +1,6 @@
 import {retrieve} from "../utils/local-storage";
 import {storeEventList} from "../event/event";
-import {hasUserReturnedUnderNewUserTenureLimit, setUserStatus} from "../user/user";
+import {hasUserReturnedBeyondNewUserTenureLimit, setUserStatus} from "../user/user";
 import {store} from "../utils/session-storage";
 
 const SESSION_ID_KEY: string = "sessionEnd";
@@ -15,7 +15,7 @@ export function initSession(): void {
 	if (lastSessionEndingTimeInMilliseconds) {
 		if (Date.now() > lastSessionEndingTimeInMilliseconds) {
 			setUserStatus(
-				hasUserReturnedUnderNewUserTenureLimit(lastSessionEndingTimeInMilliseconds)
+				hasUserReturnedBeyondNewUserTenureLimit(lastSessionEndingTimeInMilliseconds)
 			);
 			restartSession(true);
 		} else {
