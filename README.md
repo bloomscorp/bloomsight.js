@@ -49,6 +49,35 @@ init({
    ...
 });
 ```
+
+For CDN 
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+    <script>
+        init({
+            propertyToken: '65d72f0b5e990c6028790156', 
+            isDevelopmentMode: true,
+            ...
+        });
+    </script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
+```
+
 Below is the table with all the possible options that can be configured.
 
 | Option | Type     | Description                | Mandatory | Default |
@@ -83,7 +112,7 @@ import {resolveDataEvent} from '@bloomscorp/bloomsight.js';
 resolveDataEvent('66d735b122355c8ba6a456f8'), {
   productId: 120,
   sku: 'PROD021298'
-};
+});
 ```
 ### Page View Event
 
