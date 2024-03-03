@@ -6,9 +6,13 @@ import {initPageViewEventHandler} from "./event/page-view-event";
 import {IConfig} from "./configuration/interface/config";
 import {initConfig} from "./configuration/configuration";
 
+import {resolveSimpleEvent} from './event/simple-event';
+import {resolveDataEvent} from './event/data-event';
+import {pageViewObserver} from './event/page-view-event';
+
 function init(appConfig: IConfig): void {
 	initConfig(appConfig);
-	
+
 	initLocation((): void => {
 			initPlatform();
 			initUser();
@@ -21,7 +25,16 @@ function init(appConfig: IConfig): void {
 	);
 }
 
-export {init};
-export {resolveSimpleEvent} from './event/simple-event';
-export {resolveDataEvent} from './event/data-event';
-export {pageViewObserver} from './event/page-view-event';
+(window as any).init = init;
+(window as any).resolveSimpleEvent = resolveSimpleEvent;
+(window as any).resolveDataEvent = resolveDataEvent;
+(window as any).pageViewObserver = pageViewObserver;
+
+
+export {
+	init,
+	resolveSimpleEvent,
+	resolveDataEvent,
+	pageViewObserver
+};
+
