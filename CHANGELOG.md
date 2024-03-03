@@ -1,5 +1,12 @@
 
 
+## [0.1.4](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.3...v0.1.4) (2024-03-03)
+
+
+### Performance Improvements
+
+* optimize bundle size ([7fdfe3e](https://github.com/bloomscorp/bloomsight.js/commit/7fdfe3e08af52c2f08a7f137044976326dde7f75))
+
 ## [0.1.3](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.2...v0.1.3) (2024-03-03)
 
 
