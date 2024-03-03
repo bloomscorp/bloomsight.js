@@ -5,6 +5,8 @@
 /docs
 /demo
 /umd
+/coverage
+/test
 
 commitlint.config.js
 .editorconfig
