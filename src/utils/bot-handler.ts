@@ -1,56 +1,169 @@
-const BOT_USER_AGENT_STARTS_WITH: string[] = [
-	'user-agent',  // User-Agent: User-Agent:
-	'Mozilla/3.0 ',
-	'Mozilla/2.0 ',
-	'Mozilla/1.0 ',
-	'Mozilla ',  // missing slash
-	' Mozilla/',  // leading space
-	'Mozila/', // single 'l'
-	'Mozilla/4.0 (compatible; MSIE 6.0; MS Web Services Client Protocol'  // https://twitter.com/NtSetDefault/status/1303643299509567488
-];
-
-const BOT_USER_AGENT_CONTAINS: string[] = [
-	' (compatible;MSIE ',  // typical typo missing space
-	'.0;Windows NT ',  // typical typo missing space
-	'loader',  // https://twitter.com/securityonion/status/1522614635152744453?s=20&t=gHyPTSq5A27EqKwrCd9ohg,
-	'googlebot',
-	'bingbot',
-	'yandexbot',
-	'duckduckbot',
-	'baiduspider',
-	'facebookexternalhit',
-	'twitterbot',
-];
-
-const BOT_USER_AGENTS: string[] = [
-	'_',
-	'CertUtil URL Agent',  // https://twitter.com/stvemillertime/status/985150675527974912
-	'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0)',  // CobaltStrike Beacon https://unit42.paloaltonetworks.com/tracking-oceanlotus-new-downloader-kerrdown/
-	'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',  // used by APT28 malware https://threatvector.cylance.com/en_us/home/inside-the-apt28-dll-backdoor-blitz.html
-	'HTTPS',  // https://twitter.com/stvemillertime/status/1204437531632250880
-	'Erbium-UA-4ce7c27cb4be9d32e333bf032c88235a',  // https://www.cyfirma.com/outofband/erbium-stealer-malware-report
-	'x',  // Use by Racoon Stealer but could be something else
-	'xxx'  // Use by Racoon Stealer but could be something else
-];
+const botUserAgents: string[] = [
+	" daum[ /]",
+	" deusu/",
+	" yadirectfetcher",
+	"(?:^|[^g])news",
+	"(?<! (?:channel/|google/))google(?!(app|/google| pixel))",
+	"(?<! cu)bot(?:[^\\w]|_|$)",
+	"(?<! ya(?:yandex)?)search",
+	"(?<!(?:lib))http",
+	"(?<![hg]m)score",
+	"@",
+	"\\(\\)",
+	"\\.com",
+	"^12345",
+	"^<",
+	"^[\\w \\.\\-\\(?:\\):]+(?:/v?\\d+(?:\\.\\d+)?(?:\\.\\d{1,10})*?)?(?:,|$)",
+	"^[^ ]{50,}$",
+	"^\\w+/[\\w\\(\\)]*$",
+	"^active",
+	"^ad muncher",
+	"^amaya",
+	"^avsdevicesdk/",
+	"^biglotron",
+	"^bot",
+	"^clamav[ /]",
+	"^client/",
+	"^cobweb/",
+	"^custom",
+	"^ddg[_-]android",
+	"^discourse",
+	"^dispatch/\\d",
+	"^downcast/",
+	"^duckduckgo",
+	"^facebook",
+	"^getright/",
+	"^gozilla/",
+	"^hatena",
+	"^hobbit",
+	"^hotzonu",
+	"^hwcdn/",
+	"^jeode/",
+	"^jetty/",
+	"^jigsaw",
+	"^microsoft bits",
+	"^movabletype",
+	"^mozilla/\\d\\.\\d \\(compatible;?\\)$",
+	"^mozilla/\\d\\.\\d \\w*$",
+	"^navermailapp",
+	"^netsurf",
+	"^offline explorer",
+	"^postman",
+	"^python",
+	"^rank",
+	"^read",
+	"^reed",
+	"^rest",
+	"^serf",
+	"^snapchat",
+	"^space bison",
+	"^svn",
+	"^swcd ",
+	"^taringa",
+	"^thumbor/",
+	"^track",
+	"^valid",
+	"^w3c",
+	"^webbandit/",
+	"^webcopier",
+	"^wget",
+	"^whatsapp",
+	"^wordpress",
+	"^xenu link sleuth",
+	"^yahoo",
+	"^yandex",
+	"^zdm/\\d",
+	"^zoom marketplace/",
+	"^{{.*}}$",
+	"archive",
+	"ask jeeves/teoma",
+	"bit\\.ly/",
+	"bluecoat drtr",
+	"browsex",
+	"burpcollaborator",
+	"capture",
+	"catch",
+	"check",
+	"chrome-lighthouse",
+	"chromeframe",
+	"classifier",
+	"cloud",
+	"crawl",
+	"dareboost",
+	"datanyze",
+	"dejaclick",
+	"dmbrowser",
+	"download",
+	"evc-batch/",
+	"feed",
+	"firephp",
+	"gomezagent",
+	"headless",
+	"httrack",
+	"hubspot marketing grader",
+	"hydra",
+	"ibisbrowser",
+	"images",
+	"insight",
+	"inspect",
+	"iplabel",
+	"ips-agent",
+	"java(?!;)",
+	"library",
+	"mail\\.ru/",
+	"manager",
+	"neustar wpm",
+	"node",
+	"nutch",
+	"offbyone",
+	"optimize",
+	"pageburst",
+	"parser",
+	"perl",
+	"phantom",
+	"pingdom",
+	"powermarks",
+	"preview",
+	"proxy",
+	"ptst[ /]\\d",
+	"reputation",
+	"resolver",
+	"retriever",
+	"rexx;",
+	"rigor",
+	"robot",
+	"rss",
+	"scan",
+	"scrape",
+	"server",
+	"sogou",
+	"sparkler/",
+	"speedcurve",
+	"spider",
+	"splash",
+	"statuscake",
+	"supercleaner",
+	"synapse",
+	"synthetic",
+	"tools",
+	"torrent",
+	"trace",
+	"transcoder",
+	"url",
+	"virtuoso",
+	"wappalyzer",
+	"webglance",
+	"webkit2png",
+	"whatcms/",
+	"zgrab"
+]
 
 const _userAgent: string = window.navigator.userAgent;
 
-export function isBot(): boolean {
-	return (
-		doesUserAgentContainBotMetadata() ||
-		doesUserAgentStartsWithBotMetadata() ||
-		doesUserAgentMatchesWithBotUserAgent()
-	);
+export function isBot(agent?: string | null): boolean {
+	const userAgent: string = agent ? agent : _userAgent;
+	const botUserAgentsRegex: RegExp = new RegExp(botUserAgents.join('|'), 'i');
+
+	return botUserAgentsRegex.test(userAgent);
 }
 
-function doesUserAgentContainBotMetadata(): boolean {
-	return BOT_USER_AGENT_CONTAINS.some((info: string) => _userAgent.includes(info));
-}
-
-function doesUserAgentStartsWithBotMetadata(): boolean {
-	return BOT_USER_AGENT_STARTS_WITH.some((info: string) => _userAgent.startsWith(info));
-}
-
-function doesUserAgentMatchesWithBotUserAgent(): boolean {
-	return BOT_USER_AGENTS.some((agent: string): boolean => _userAgent === agent)
-}
