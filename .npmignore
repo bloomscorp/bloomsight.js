@@ -17,3 +17,4 @@ commitlint.config.js
 tsconfig.json
 tsup.config.ts
 webpack.config.ts
+vitest.config.ts
