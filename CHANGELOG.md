@@ -1,5 +1,17 @@
 
 
+## [0.1.3](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.2...v0.1.3) (2024-03-03)
+
+
+### Bug Fixes
+
+* attach event handlers to `window` for umd ([690539f](https://github.com/bloomscorp/bloomsight.js/commit/690539fb0c36352a85dbbf3737bff4a7d289020a))
+
+
+### Performance Improvements
+
+* improve bot detection ([af7cfff](https://github.com/bloomscorp/bloomsight.js/commit/af7cfff87ba144d76b674de81a3326391fb5bd47))
+
 ## [0.1.2](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.1...v0.1.2) (2024-02-22)
 
 ## [0.1.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.0...v0.1.1) (2024-02-22)
