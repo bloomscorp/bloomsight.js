@@ -9,6 +9,7 @@ import {initConfig} from "./configuration/configuration";
 import {resolveSimpleEvent} from './event/simple-event';
 import {resolveDataEvent} from './event/data-event';
 import {pageViewObserver} from './event/page-view-event';
+import {sendEmail} from "./email/email";
 
 function init(appConfig: IConfig): void {
 	initConfig(appConfig);
@@ -29,12 +30,14 @@ function init(appConfig: IConfig): void {
 (window as any).resolveSimpleEvent = resolveSimpleEvent;
 (window as any).resolveDataEvent = resolveDataEvent;
 (window as any).pageViewObserver = pageViewObserver;
+(window as any).sendEmail = sendEmail;
 
 
 export {
 	init,
 	resolveSimpleEvent,
 	resolveDataEvent,
-	pageViewObserver
+	pageViewObserver,
+	sendEmail
 };
 

@@ -111,6 +111,7 @@ export function resolvePageViewEvent(
 		},
 		(): void => {
 			store('startUrl', window.location.href);
-		});
+		}
+	);
 }
 

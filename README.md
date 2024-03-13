@@ -101,6 +101,10 @@ import {resolveSimpleEvent} from '@bloomscorp/bloomsight.js';
 
 resolveSimpleEvent('65d735b122354c8ba6a489c2');
 ```
+| Option       | Type     | Description        | Mandatory | Default |
+|:-------------|:---------|:-------------------|:----------|:--------|
+| `eventToken` | `string` | Id of simple event | ✅         | NA      |
+
 
 ### Data Event
 
@@ -114,6 +118,11 @@ resolveDataEvent('66d735b122355c8ba6a456f8'), {
   sku: 'PROD021298'
 });
 ```
+| Option       | Type     | Description                              | Mandatory | Default |
+|:-------------|:---------|:-----------------------------------------|:----------|:--------|
+| `eventToken` | `string` | Id of data event                         | ✅         | NA      |
+| `eventData`  | `Object` | additional metadata in key, value format | ✅         | NA      |
+
 ### Page View Event
 
 
@@ -145,6 +154,28 @@ export class AppComponent implements OnInit{
   }
 }
 ```
+
+### Send Email
+
+Use `sendEmail` method to send email
+
+```ts
+import {sendEmail} from '@bloomscorp/bloomsight.js';
+
+sendEmail(
+  '66d735b122355c8ba6a456f8', 
+  '63d735h822355s6ba6a4556k',
+  '61d895h922355b6ba6a4587a',
+  ...
+)
+```
+
+| Option            | Type       | Description                                                                                | Mandatory | Default |
+|:------------------|:-----------|:-------------------------------------------------------------------------------------------|:----------|:--------|
+| `engineId`        | `string`   | Id of the engine that will be used to send email                                           | ✅         | NA      |
+| `templateId`      | `string`   | Id of the email template that will be used as email body                                   | ✅         | NA      |
+| `templateOwnerId` | `string`   | Id of the user who has created the template                                                | ✅         | NA      |
+| `emailMetaData`   | `FormData` | attachment & variables used in the template & their respective values in key, value format | ❌         | NA      |
 
 ## License
 
