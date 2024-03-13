@@ -1,5 +1,12 @@
 
 
+# [0.2.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.4...v0.2.0) (2024-03-13)
+
+
+### Features
+
+* add api to send email ([fc207ac](https://github.com/bloomscorp/bloomsight.js/commit/fc207ac46bcc043bb910df265ade3172f54d558a))
+
 ## [0.1.4](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.3...v0.1.4) (2024-03-03)
 
 
