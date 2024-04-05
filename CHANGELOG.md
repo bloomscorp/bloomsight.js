@@ -1,5 +1,12 @@
 
 
+# [0.3.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.2.0...v0.3.0) (2024-04-05)
+
+
+### Features
+
+* add hostname validation ([b2c9e1b](https://github.com/bloomscorp/bloomsight.js/commit/b2c9e1b7c930a67c2e802bcfada0d19b72036e2e))
+
 # [0.2.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.1.4...v0.2.0) (2024-03-13)
 
 
