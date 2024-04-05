@@ -10,6 +10,7 @@ import {retrieveEventList, storeEventList} from "./event";
 
 export function resolveSimpleEvent(
 	eventToken: string,
+	label: string = ''
 ): void {
 
 	if (isBot()) config!.stopAll = true;
