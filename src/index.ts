@@ -10,20 +10,36 @@ import {resolveSimpleEvent} from './event/simple-event';
 import {resolveDataEvent} from './event/data-event';
 import {pageViewObserver} from './event/page-view-event';
 import {sendEmail} from "./email/email";
+import {validateProperty} from "./property/property";
 
 function init(appConfig: IConfig): void {
 	initConfig(appConfig);
 
-	initLocation((): void => {
-			initPlatform();
-			initUser();
-			initSession();
+	validateProperty(
+		appConfig.propertyToken,
+		window.location.host
+	)
+		.then((isValid: boolean): void => {
 
-			if (appConfig.observePageViaWebAPI) {
-				initPageViewEventHandler();
+			if (!isValid) {
+				console.error(`propertyToken is not valid for ${window.location.host}`);
+				return;
 			}
-		}
-	);
+
+			initLocation((): void => {
+					initPlatform();
+					initUser();
+					initSession();
+
+					if (appConfig.observePageViaWebAPI) {
+						initPageViewEventHandler();
+					}
+				}
+			);
+		})
+		.catch((error: string): void => {
+			console.error(error)
+		})
 }
 
 (window as any).init = init;
