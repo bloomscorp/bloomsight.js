@@ -69,7 +69,7 @@ export function executeGetPayload<T extends ITransmissionResponse, S>(
 
 export function executePostPayload<T>(
 	url: string,
-	payload: T,
+	payload: T | FormData,
 	headers: Headers | undefined,
 	onPreExecute: () => void,
 	onPostExecute: (response: ITransmissionResponse) => void,
@@ -80,11 +80,22 @@ export function executePostPayload<T>(
 
 	onPreExecute();
 
-	fetch(url, {
+	const requestOptions: RequestInit = {
 		method: 'POST',
-		headers,
-		body: JSON.stringify(payload)
-	})
+		headers: headers,
+	};
+
+	if (payload instanceof FormData) {
+		requestOptions.body = payload;
+	} else {
+		requestOptions.body = JSON.stringify(payload);
+		requestOptions.headers = {
+			...requestOptions.headers,
+			'Content-Type': 'application/json',
+		};
+	}
+
+	fetch(url, requestOptions)
 		.then((response: Response) => response.json() as PromiseLike<ITransmissionResponse>)
 		.then(
 			(response: ITransmissionResponse): void => {
