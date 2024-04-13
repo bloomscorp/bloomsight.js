@@ -1,5 +1,12 @@
 
 
+## [0.3.2](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.1...v0.3.2) (2024-04-13)
+
+
+### Bug Fixes
+
+* add fix for email request content-type issue ([b7c8a3f](https://github.com/bloomscorp/bloomsight.js/commit/b7c8a3f728bf87bcd12b92e68777cc803821096f))
+
 ## [0.3.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.0...v0.3.1) (2024-04-07)
 
 # [0.3.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.2.0...v0.3.0) (2024-04-05)
