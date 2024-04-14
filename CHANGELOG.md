@@ -1,5 +1,12 @@
 
 
+## [0.3.3](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.2...v0.3.3) (2024-04-14)
+
+
+### Bug Fixes
+
+* add callback handlers for sendEmail ([67a0352](https://github.com/bloomscorp/bloomsight.js/commit/67a0352efdbf713a82d1db31cd15de1374ecf393))
+
 ## [0.3.2](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.1...v0.3.2) (2024-04-13)
 
 
