@@ -8,7 +8,9 @@ export function sendEmail(
 	engineId: string,
 	templateId: string,
 	templateOwnerId: string,
-	emailMetaData: FormData
+	emailMetaData: FormData,
+	onSuccess: () => void,
+	onError: () => void
 ): void {
 
 	let payload: FormData = new FormData();
@@ -42,9 +44,11 @@ export function sendEmail(
 		},
 		(response: ITransmissionResponse): void => {
 			if (isDevelopmentMode()) console.log(`email sent successfully`);
+			onSuccess();
 		},
 		(error: string): void => {
 			if (isDevelopmentMode()) console.log(`email sending error: ${error}`);
+			onError();
 		},
 		(): void => {
 		}
