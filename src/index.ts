@@ -11,7 +11,7 @@ import {resolveDataEvent} from './event/data-event';
 import {pageViewObserver} from './event/page-view-event';
 import {sendEmail} from "./email/email";
 import {validateProperty} from "./property/property";
-import {resolveHost} from "./utils/browser-api";
+import {isBrowser, resolveHost} from "./utils/browser-api";
 
 function init(appConfig: IConfig): void {
 	initConfig(appConfig);
@@ -43,12 +43,13 @@ function init(appConfig: IConfig): void {
 		})
 }
 
-(window as any).init = init;
-(window as any).resolveSimpleEvent = resolveSimpleEvent;
-(window as any).resolveDataEvent = resolveDataEvent;
-(window as any).pageViewObserver = pageViewObserver;
-(window as any).sendEmail = sendEmail;
-
+if (isBrowser()) {
+	(window as any).init = init;
+	(window as any).resolveSimpleEvent = resolveSimpleEvent;
+	(window as any).resolveDataEvent = resolveDataEvent;
+	(window as any).pageViewObserver = pageViewObserver;
+	(window as any).sendEmail = sendEmail;
+}
 
 export {
 	init,
