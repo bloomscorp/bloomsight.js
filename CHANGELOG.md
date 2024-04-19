@@ -1,5 +1,12 @@
 
 
+## [0.3.4](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.3...v0.3.4) (2024-04-19)
+
+
+### Bug Fixes
+
+* add support for non-browser environment ([76839ed](https://github.com/bloomscorp/bloomsight.js/commit/76839ed9648cbe1c95ff0beb71cd414200bcbf3f))
+
 ## [0.3.3](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.2...v0.3.3) (2024-04-14)
 
 
