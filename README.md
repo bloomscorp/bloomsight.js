@@ -13,66 +13,70 @@ Install using `npm` by running
 ```bash
 npm install @bloomscorp/bloomsight.js
 ```
+
 OR
 
-Use our CDN url without installation. Make sure to change `<VERSION>` with appropriate release 
+Use our CDN url without installation. Make sure to change `<VERSION>` with appropriate release
 version of the library
+
 ```
 https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js
 ```
 
 ## Usage/Examples
 
-
 ### Configuration
 
 Use the `init` method to configure the library.
 
 For ESModule projects
+
 ```ts
 import {init} from '@bloomscorp/bloomsight.js';
 
 init({
-   propertyToken: '65d72f0b5e990c6028790156', 
-   isDevelopmentMode: true,
-   ...
+	propertyToken: '65d72f0b5e990c6028790156',
+	isDevelopmentMode: true,
+	...
 });
 ```
 
 For CommonJS projects
+
 ```ts
 const {init} = require('@bloomscorp/bloomsight.js');
 
 init({
-   propertyToken: '65d72f0b5e990c6028790156', 
-   isDevelopmentMode: true,
-   ...
+	propertyToken: '65d72f0b5e990c6028790156',
+	isDevelopmentMode: true,
+	...
 });
 ```
 
-For CDN 
+For CDN
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
 </head>
 
 <body>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
-    <script>
-        init({
-            propertyToken: '65d72f0b5e990c6028790156', 
-            isDevelopmentMode: true,
-            ...
-        });
-    </script>
-    <script src="./app.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+<script>
+	init({
+		propertyToken: '65d72f0b5e990c6028790156',
+		isDevelopmentMode: true,
+		...
+	});
+</script>
+<script src="./app.js"></script>
 </body>
 
 </html>
@@ -91,7 +95,6 @@ Below is the table with all the possible options that can be configured.
 | `stopAll`              | `boolean` | stops all event tracking                                                                                                                    | ❌         | `false` |
 | `logOnly`              | `boolean` | tracks event but doesn't save to database. Should be used only when `isDevelopmentMode: true`                                               | ❌         | `false` |
 
-
 ### Simple Event
 
 Use the `resolveSimpleEvent` method to log simple events
@@ -100,15 +103,15 @@ Use the `resolveSimpleEvent` method to log simple events
 import {resolveSimpleEvent} from '@bloomscorp/bloomsight.js';
 
 resolveSimpleEvent(
-  '65d735b122354c8ba6a489c2',
-  'Contact Us CTA button'
+	'65d735b122354c8ba6a489c2',
+	'Contact Us CTA button'
 );
 ```
+
 | Option       | Type     | Description                                     | Mandatory | Default |
 |:-------------|:---------|:------------------------------------------------|:----------|:--------|
 | `eventToken` | `string` | Id of simple event                              | ✅         | NA      |
 | `label`      | `string` | a label/name for the event for future reference | ❌         | ''      |
-
 
 ### Data Event
 
@@ -118,14 +121,15 @@ Use the `resolveDataEvent` method to log data events
 import {resolveDataEvent} from '@bloomscorp/bloomsight.js';
 
 resolveDataEvent(
-  '66d735b122355c8ba6a456f8',
-  {
-     productId: 120,
-     sku: 'PROD021298'
-  },
-  'Add to Wishlist CTA button'
+	'66d735b122355c8ba6a456f8',
+	{
+		productId: 120,
+		sku: 'PROD021298'
+	},
+	'Add to Wishlist CTA button'
 );
 ```
+
 | Option       | Type     | Description                                     | Mandatory | Default |
 |:-------------|:---------|:------------------------------------------------|:----------|:--------|
 | `eventToken` | `string` | Id of data event                                | ✅         | NA      |
@@ -134,33 +138,31 @@ resolveDataEvent(
 
 ### Page View Event
 
-
 By default, page view events are tracked automatically via web APIs. This approach is recommended mostly for vanilla projects where a `load` event is trigged once a new page is loaded.
-
 
 However, frameworks like `Angular`, `React` etc doesn't work that way. So, it is recommended to pass `observePageViaWebAPI` as `false` and use `pageViewObserver` to trigger page view events.
 
->P.S: It is recommened to use appropriate library as per your framework from [here]()
+> P.S: It is recommened to use appropriate library as per your framework from [here]()
 
 Here is an example in Angular,
 
 ```ts
 import {pageViewObserver} from '@bloomscorp/bloomsight.js';
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
-  constructor(
-    private router: Router
-  ) {
-  }
+	constructor(
+		private router: Router
+	) {
+	}
 
-  ngOnInit() {
-    this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          pageViewObserver();
-        }
-    })
-  }
+	ngOnInit() {
+		this.router.events.subscribe(event => {
+			if (event instanceof NavigationEnd) {
+				pageViewObserver();
+			}
+		})
+	}
 }
 ```
 
@@ -171,25 +173,32 @@ Use `sendEmail` method to send email
 ```ts
 import {sendEmail} from '@bloomscorp/bloomsight.js';
 
+let formData = new FormData();
+formData.append('name', 'John');
+formData.append('email', 'john.doe@gmail.com');
+
 sendEmail(
-  '66d735b122355c8ba6a456f8', 
-  '63d735h822355s6ba6a4556k',
-  '61d895h922355b6ba6a4587a',
-  ...
+	'66d735b122355c8ba6a456f8',
+	'63d735h822355s6ba6a4556k',
+	'61d895h922355b6ba6a4587a',
+	formData,
+	() => alert('email sent successfully!'),
+	() => alert('unable to send email! Try again later.')
 )
 ```
 
-| Option            | Type       | Description                                                                                | Mandatory | Default |
-|:------------------|:-----------|:-------------------------------------------------------------------------------------------|:----------|:--------|
-| `engineId`        | `string`   | Id of the engine that will be used to send email                                           | ✅         | NA      |
-| `templateId`      | `string`   | Id of the email template that will be used as email body                                   | ✅         | NA      |
-| `templateOwnerId` | `string`   | Id of the user who has created the template                                                | ✅         | NA      |
-| `emailMetaData`   | `FormData` | attachment & variables used in the template & their respective values in key, value format | ❌         | NA      |
+| Option            | Type         | Description                                                                                | Mandatory | Default |
+|:------------------|:-------------|:-------------------------------------------------------------------------------------------|:----------|:--------|
+| `engineId`        | `string`     | Id of the engine that will be used to send email                                           | ✅         | NA      |
+| `templateId`      | `string`     | Id of the email template that will be used as email body                                   | ✅         | NA      |
+| `templateOwnerId` | `string`     | Id of the user who has created the template                                                | ✅         | NA      |
+| `emailMetaData`   | `FormData`   | attachment & variables used in the template & their respective values in key, value format | ❌         | NA      |
+| `onSuccess`       | `() => void` | callback for operation success event                                                       | ❌         | NA      |
+| `onError`         | `() => void` | callback for operation error event                                                         | ❌         | NA      |
 
 ## License
 
 [MIT](./LICENSE.md)
-
 
 ## Support
 
