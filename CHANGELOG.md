@@ -1,5 +1,12 @@
 
 
+## [0.3.5](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.4...v0.3.5) (2024-04-19)
+
+
+### Bug Fixes
+
+* add minor fix for browser context issue ([8ea9ac0](https://github.com/bloomscorp/bloomsight.js/commit/8ea9ac0eb2b27a664ada940d00d246019b839064))
+
 ## [0.3.4](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.3...v0.3.4) (2024-04-19)
 
 
