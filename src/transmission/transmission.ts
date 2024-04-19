@@ -1,6 +1,7 @@
 import {ITransmissionResponse} from "./interface/transmission-response";
 import {isEmptyString} from "bmx-pastebox";
 import {RESOURCE_VALIDATION_ERROR} from "../support/message";
+import {isBrowser} from "../utils/browser-api";
 
 export function executeBasicGet(
 	url: string,
@@ -11,6 +12,8 @@ export function executeBasicGet(
 	onFailure: (error: string) => void,
 	onComplete: () => void,
 ): void {
+
+	if (!isBrowser()) return;
 
 	onPreExecute();
 
@@ -45,6 +48,8 @@ export function executeGetPayload<T extends ITransmissionResponse, S>(
 	payloadKey: string
 ): void {
 
+	if (!isBrowser()) return;
+
 	onPreExecute();
 
 	fetch(url, {
@@ -77,6 +82,8 @@ export function executePostPayload<T>(
 	onFailure: (error: string) => void,
 	onComplete: () => void,
 ): void {
+
+	if (!isBrowser()) return;
 
 	onPreExecute();
 

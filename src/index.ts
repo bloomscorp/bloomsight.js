@@ -11,18 +11,19 @@ import {resolveDataEvent} from './event/data-event';
 import {pageViewObserver} from './event/page-view-event';
 import {sendEmail} from "./email/email";
 import {validateProperty} from "./property/property";
+import {resolveHost} from "./utils/browser-api";
 
 function init(appConfig: IConfig): void {
 	initConfig(appConfig);
 
 	validateProperty(
 		appConfig.propertyToken,
-		window.location.host
+		resolveHost()
 	)
 		.then((isValid: boolean): void => {
 
 			if (!isValid) {
-				console.error(`propertyToken is not valid for ${window.location.host}`);
+				console.error(`propertyToken is not valid for ${resolveHost()}`);
 				return;
 			}
 

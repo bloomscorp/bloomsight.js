@@ -10,6 +10,7 @@ import {resolveUTMData} from "../utils/utm-resolver";
 import {isBot} from "../utils/bot-handler";
 import {isNewUser, resolveUserId} from "../user/user";
 import {retrieveEventList, storeEventList} from "./event";
+import {resolveActiveUrl, resolveDocumentReferrer, resolveDocumentTitle, resolveWindow} from "../utils/browser-api";
 
 const REFERRED_URL_KEY: string = 'startUrl';
 const PAGEVIEW_EVENT: string = 'SITE_VISITED';
@@ -18,27 +19,27 @@ let _hasInitialPageViewOccurred: boolean = false;
 let _debounce: boolean = false;
 
 export function initPageViewEventHandler(): void {
-	window.addEventListener("load", () => pageViewObserver());
+	resolveWindow()?.addEventListener("load", () => pageViewObserver());
 }
 
 export function pageViewObserver(): void {
 	if (!_hasInitialPageViewOccurred) {
 		resolvePageViewEvent(
 			true,
-			resolveUTMData(window.location.href)
+			resolveUTMData(resolveActiveUrl())
 		);
 
 		_hasInitialPageViewOccurred = true;
 	} else {
 		resolvePageViewEvent(
 			false,
-			resolveUTMData(window.location.href)
+			resolveUTMData(resolveActiveUrl())
 		);
 	}
 }
 
 function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {
-	return isFirstPageViewOccurrence ? document.referrer : retrieve(REFERRED_URL_KEY);
+	return isFirstPageViewOccurrence ? resolveDocumentReferrer() : retrieve(REFERRED_URL_KEY);
 }
 
 export function resolvePageViewEvent(
@@ -61,8 +62,8 @@ export function resolvePageViewEvent(
 		browserName: resolveBrowser(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
-		url: window.location.href || '',
-		title: document.title || '',
+		url: resolveActiveUrl() || '',
+		title: resolveDocumentTitle() || '',
 		utmCampaign: utmInfo.utmCampaign,
 		utmContent: utmInfo.utmContent,
 		utmMedium: utmInfo.utmMedium,
@@ -95,7 +96,7 @@ export function resolvePageViewEvent(
 		console.log('page view data: ', payload);
 
 	if (config?.logOnly)
-		store('startUrl', window.location.href);
+		store('startUrl', resolveActiveUrl());
 
 	logPageViewEvent(
 		payload,
@@ -110,7 +111,7 @@ export function resolvePageViewEvent(
 			if (isDevelopmentMode()) console.log(`event log error: ${error}`);
 		},
 		(): void => {
-			store('startUrl', window.location.href);
+			store('startUrl', resolveActiveUrl());
 		}
 	);
 }

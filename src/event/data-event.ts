@@ -7,6 +7,7 @@ import {IDataEventPayload} from "./interface/data-event-payload";
 import {logDataEvent} from "../transmission/data-event-transmission";
 import {isNewUser, resolveUserId} from "../user/user";
 import {retrieveEventList, storeEventList} from "./event";
+import {resolveActiveUrl} from "../utils/browser-api";
 
 export function resolveDataEvent(
 	eventToken: string,
@@ -30,7 +31,7 @@ export function resolveDataEvent(
 		browserName: resolveBrowser(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
-		url: window.location.href || '',
+		url: resolveActiveUrl() || '',
 	};
 
 	// TODO: re-think this implementation

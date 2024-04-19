@@ -2,6 +2,7 @@ import {retrieve} from "../utils/local-storage";
 import {storeEventList} from "../event/event";
 import {hasUserReturnedBeyondNewUserTenureLimit, setUserStatus} from "../user/user";
 import {store} from "../utils/session-storage";
+import {isBrowser} from "../utils/browser-api";
 
 const SESSION_ID_KEY: string = "sessionEnd";
 const SESSION_TENURE_IN_MINUTES: number = 30;
@@ -30,6 +31,8 @@ export function initSession(): void {
 }
 
 function initSessionObserver(): void {
+	if (!isBrowser()) return;
+
 	window.addEventListener('keydown', () => throttle());
 	window.addEventListener('mousemove', () => throttle());
 	window.addEventListener('click', () => throttle());
@@ -37,7 +40,7 @@ function initSessionObserver(): void {
 	window.addEventListener('wheel', () => throttle());
 }
 
-function throttle(): void{
+function throttle(): void {
 	const coolingPeriodEndTimeInMilliseconds: number = _lastTriggerTimeInMilliseconds + (SESSION_OBSERVER_COOLING_PERIOD_IN_MINUTES * 60 * 1000);
 	const elapsedTimeAfterLastTriggerHappenedInMilliseconds: number = coolingPeriodEndTimeInMilliseconds - Date.now();
 	const hasReTriggerHappenedAfterCoolingPeriod: boolean = elapsedTimeAfterLastTriggerHappenedInMilliseconds < 0;

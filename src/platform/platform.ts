@@ -2,8 +2,9 @@ import {IBrowser} from "./constant/browser";
 import {IOperatingSystem} from "./constant/operating-system";
 import {IDevice} from "./constant/device";
 import {isDevelopmentMode} from "../configuration/configuration";
+import {resolveUserAgent} from "../utils/browser-api";
 
-const _userAgent: string = window.navigator.userAgent;
+const _userAgent: string = resolveUserAgent();
 
 export function initPlatform(): void {
 	const browser: string = resolveBrowser();

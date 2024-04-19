@@ -1,3 +1,5 @@
+import {resolveUserAgent} from "./browser-api";
+
 const botUserAgents: string[] = [
 	" daum[ /]",
 	" deusu/",
@@ -158,7 +160,7 @@ const botUserAgents: string[] = [
 	"zgrab"
 ]
 
-const _userAgent: string = window.navigator.userAgent;
+const _userAgent: string = resolveUserAgent();
 
 export function isBot(agent?: string | null): boolean {
 	const userAgent: string = agent ? agent : _userAgent;
