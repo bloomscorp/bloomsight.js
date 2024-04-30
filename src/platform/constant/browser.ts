@@ -1,6 +1,6 @@
 export enum IBrowser {
     Unknown = 'Unknown',
-    Chrome = 'Google Chorme',
+    Chrome = 'Google Chrome',
     Firefox = 'Mozilla Firefox',
     Safari = 'Apple Safari',
     ME_Legacy = 'Microsoft Edge (Legacy)',
