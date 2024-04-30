@@ -1,5 +1,12 @@
 
 
+## [0.3.6](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.5...v0.3.6) (2024-04-30)
+
+
+### Bug Fixes
+
+* remove metainfo restriction for sendEmail ([13e9f6e](https://github.com/bloomscorp/bloomsight.js/commit/13e9f6ea9db979177fe9d64cbcc1f0bbf34e3af0))
+
 ## [0.3.5](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.4...v0.3.5) (2024-04-19)
 
 
