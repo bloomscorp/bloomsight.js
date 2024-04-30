@@ -1,5 +1,12 @@
 
 
+## [0.3.7](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.6...v0.3.7) (2024-04-30)
+
+
+### Bug Fixes
+
+* add fix for wrong chrome spelling ([28558ff](https://github.com/bloomscorp/bloomsight.js/commit/28558ff25edd91ad53df15c75cb8f63626c1fbba))
+
 ## [0.3.6](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.5...v0.3.6) (2024-04-30)
 
 
