@@ -1,5 +1,12 @@
 
 
+## [0.3.8](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.7...v0.3.8) (2024-05-03)
+
+
+### Bug Fixes
+
+* add fix for sendEmail method ([533f746](https://github.com/bloomscorp/bloomsight.js/commit/533f746bd5e5c217715ee95f37638635a49c30b7))
+
 ## [0.3.7](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.6...v0.3.7) (2024-04-30)
 
 
