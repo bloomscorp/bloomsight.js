@@ -20,14 +20,14 @@ export function sendEmail(
 	payload.append('userId', templateOwnerId);
 	payload.append('templateId', templateId);
 
-	payload.append(`senderInfo['deviceType']`, resolveDevice());
-	payload.append(`senderInfo['osName']`, resolveOS());
-	payload.append(`senderInfo['browserName']`, resolveBrowser());
-	payload.append(`senderInfo['ipAddress']`, resolveIPAddress());
-	payload.append(`senderInfo['countryCode']`, resolveCountry());
-	payload.append(`senderInfo['region']`, resolveRegion());
-	payload.append(`senderInfo['city']`, resolveCity());
-	payload.append(`senderInfo['url']`, resolveActiveUrl());
+	payload.append(`senderInfo[deviceType]`, resolveDevice());
+	payload.append(`senderInfo[osName]`, resolveOS());
+	payload.append(`senderInfo[browserName]`, resolveBrowser());
+	payload.append(`senderInfo[ipAddress]`, resolveIPAddress());
+	payload.append(`senderInfo[countryCode]`, resolveCountry());
+	payload.append(`senderInfo[region]`, resolveRegion());
+	payload.append(`senderInfo[city]`, resolveCity());
+	payload.append(`senderInfo[url]`, resolveActiveUrl());
 
 	emailMetaData.forEach((item: FormDataEntryValue, key: string) => {
 		payload.append(`metadata[${key}]`, item);
