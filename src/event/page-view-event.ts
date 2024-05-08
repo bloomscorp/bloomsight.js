@@ -19,7 +19,7 @@ let _hasInitialPageViewOccurred: boolean = false;
 let _debounce: boolean = false;
 
 export function initPageViewEventHandler(): void {
-	resolveWindow()?.addEventListener("load", () => pageViewObserver());
+	resolveWindow()?.addEventListener("DOMContentLoaded", () => pageViewObserver());
 }
 
 export function pageViewObserver(): void {
