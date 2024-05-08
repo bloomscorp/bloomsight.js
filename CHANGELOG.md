@@ -1,5 +1,12 @@
 
 
+## [0.3.9](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.8...v0.3.9) (2024-05-08)
+
+
+### Bug Fixes
+
+* update load to DOMContentLoaded event for page view ([178fe3a](https://github.com/bloomscorp/bloomsight.js/commit/178fe3ab1d8d32530b85a02621a6c66c306c0c66))
+
 ## [0.3.8](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.7...v0.3.8) (2024-05-03)
 
 
