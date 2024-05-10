@@ -11,12 +11,21 @@ const defaultConfig: Partial<IConfig> = {
 	observePageViaWebAPI: true
 }
 
-export function initConfig(appConfig: IConfig): void {
+export function areMandatoryPropertyAvailable(appConfig: any): boolean {
+	return (
+		appConfig.hasOwnProperty('propertyToken') &&
+		appConfig.hasOwnProperty('isDevelopmentMode')
+	);
+}
+
+export function initConfig(appConfig: IConfig): IConfig {
 	config = {...defaultConfig, ...appConfig};
 
 	if (isDevelopmentMode()) {
 		console.log('configuration: ', config);
 	}
+
+	return config;
 }
 
 export function isConfiguredProperly(): boolean {

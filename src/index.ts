@@ -4,7 +4,7 @@ import {initUser} from "./user/user";
 import {initSession} from "./session/session";
 import {initPageViewEventHandler, pageViewObserver} from "./event/page-view-event";
 import {IConfig} from "./configuration/interface/config";
-import {initConfig} from "./configuration/configuration";
+import {areMandatoryPropertyAvailable, initConfig} from "./configuration/configuration";
 
 import {resolveSimpleEvent} from './event/simple-event';
 import {resolveDataEvent} from './event/data-event';
@@ -14,7 +14,12 @@ import {isBrowser, resolveHost} from "./utils/browser-api";
 
 function init(appConfig: IConfig): void {
 
-	initConfig(appConfig);
+	if (!areMandatoryPropertyAvailable(appConfig)) {
+		console.error('propertyToken, isDevelopmentMode are mandatory parameters!');
+		return;
+	}
+
+	appConfig = initConfig(appConfig);
 
 	validateProperty(appConfig.propertyToken, resolveHost())
 		.then((isValid: boolean): void => {
