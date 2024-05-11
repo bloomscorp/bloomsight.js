@@ -1,5 +1,12 @@
 
 
+## [0.3.10](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.9...v0.3.10) (2024-05-11)
+
+
+### Bug Fixes
+
+* add fix for new session always true issue ([6953f67](https://github.com/bloomscorp/bloomsight.js/commit/6953f67565231447e301a5f4bad60778d36b9e75))
+
 ## [0.3.9](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.8...v0.3.9) (2024-05-08)
 
 
