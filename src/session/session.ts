@@ -1,7 +1,6 @@
-import {retrieve} from "../utils/local-storage";
+import {retrieve, store} from "../utils/local-storage";
 import {storeEventList} from "../event/event";
 import {hasUserReturnedBeyondNewUserTenureLimit, setUserStatus} from "../user/user";
-import {store} from "../utils/session-storage";
 import {isBrowser} from "../utils/browser-api";
 
 const SESSION_ID_KEY: string = "sessionEnd";
@@ -18,15 +17,16 @@ export function initSession(): void {
 			setUserStatus(
 				hasUserReturnedBeyondNewUserTenureLimit(lastSessionEndingTimeInMilliseconds)
 			);
-			restartSession(true);
+			resetSessionData();
 		} else {
 			setUserStatus(true);
 		}
 	} else {
 		setUserStatus(true);
-		restartSession(true);
+		resetSessionData();
 	}
 
+	storeSessionEndTime();
 	initSessionObserver();
 }
 
@@ -56,15 +56,11 @@ function updateSession(): void {
 
 	if (Date.now() > previousSessionEndingTimeInSeconds) {
 		setUserStatus(false);
-		restartSession(true);
+		storeSessionEndTime();
+		resetSessionData();
 	} else {
-		restartSession(false);
+		storeSessionEndTime();
 	}
-}
-
-function restartSession(resetPreviousSessionData: boolean): void {
-	storeSessionEndTime();
-	resetPreviousSessionData && resetSessionData();
 }
 
 function resetSessionData(): void {
