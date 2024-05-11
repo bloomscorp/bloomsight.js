@@ -68,15 +68,15 @@ For CDN
 <body>
 
 
-<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
-<script>
-	init({
-		propertyToken: '65d72f0b5e990c6028790156',
-		isDevelopmentMode: true,
-		...
-	});
-</script>
-<script src="./app.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+	<script>
+		init({
+			propertyToken: '65d72f0b5e990c6028790156',
+			isDevelopmentMode: true,
+			...
+		});
+	</script>
+	<script src="./app.js"></script>
 </body>
 
 </html>
@@ -137,11 +137,42 @@ resolveDataEvent(
 
 ### Page View Event
 
-Use `pageViewObserver` to trigger page view events once your page is loaded. Ideally, the function should be triggered based on `DOMContentLoaded` or `load` event.
+Use `pageViewObserver` to trigger page view events once your page is loaded. Ideally, the function should be triggered based on `DOMContentLoaded` or `load` event with a slight delay.
 
 > P.S: It is recommended to use appropriate library as per your framework from [here]() which will
 > handle page view events automatically.
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+
+
+	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+	<script>
+		init({
+			propertyToken: '65d72f0b5e990c6028790156',
+			isDevelopmentMode: true,
+			...
+		});
+	</script>
+	<script>
+		window.addEventListener(
+			'DOMContentLoaded', 
+			() => setTimeout(pageViewObserver, 5000)
+		);
+	</script>
+	<script src="./app.js"></script>
+</body>
+
+</html>
+```
 
 ### Send Email
 
