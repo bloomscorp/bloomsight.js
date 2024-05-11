@@ -2,9 +2,9 @@ import {initPlatform} from "./platform/platform";
 import {initLocation} from "./location/location";
 import {initUser} from "./user/user";
 import {initSession} from "./session/session";
-import {initPageViewEventHandler, pageViewObserver} from "./event/page-view-event";
+import {pageViewObserver} from "./event/page-view-event";
 import {IConfig} from "./configuration/interface/config";
-import {areMandatoryPropertyAvailable, initConfig} from "./configuration/configuration";
+import {config, initConfig, isConfiguredProperly} from "./configuration/configuration";
 
 import {resolveSimpleEvent} from './event/simple-event';
 import {resolveDataEvent} from './event/data-event';
@@ -14,31 +14,27 @@ import {isBrowser, resolveHost} from "./utils/browser-api";
 
 function init(appConfig: IConfig): void {
 
-	if (!areMandatoryPropertyAvailable(appConfig)) {
-		console.error('propertyToken, isDevelopmentMode are mandatory parameters!');
+	if (!isConfiguredProperly(appConfig)) {
+		console.error('propertyToken, isDevelopmentMode are mandatory parameters');
 		return;
 	}
 
-	appConfig = initConfig(appConfig);
+	initConfig(appConfig);
 
-	validateProperty(appConfig.propertyToken, resolveHost())
+	validateProperty(config.propertyToken, resolveHost())
 		.then((isValid: boolean): void => {
 
 			if (!isValid) {
 				console.error(`propertyToken is not valid for ${resolveHost()}`);
-				appConfig.stopAll = true;
+				config.stopAll = true;
 			} else {
-				appConfig.stopAll = false;
+				config.stopAll = false;
 			}
 
 			initLocation((): void => {
 					initPlatform();
 					initUser();
 					initSession();
-
-					if (appConfig.observePageViaWebAPI) {
-						initPageViewEventHandler();
-					}
 				}
 			);
 		})

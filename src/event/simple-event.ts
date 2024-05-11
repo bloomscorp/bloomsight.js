@@ -16,7 +16,10 @@ export function resolveSimpleEvent(
 
 	if (isBot()) config!.stopAll = true;
 
-	if (config?.stopAll || config?.stopSimpleEvent) return;
+	if (config?.stopAll || config?.stopSimpleEvent) {
+		console.error('Tracking simple event is disabled!')
+		return;
+	}
 
 	const payload: ISimpleEventPayload = {
 		property: resolvePropertyToken(),

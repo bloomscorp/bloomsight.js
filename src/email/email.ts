@@ -1,9 +1,10 @@
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
-import {isDevelopmentMode} from "../configuration/configuration";
+import {config, isDevelopmentMode} from "../configuration/configuration";
 import {transferEmail} from "../transmission/email-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveActiveUrl} from "../utils/browser-api";
+import {isBot} from "../utils/bot-handler";
 
 export function sendEmail(
 	engineId: string,
@@ -13,6 +14,13 @@ export function sendEmail(
 	onSuccess: () => void,
 	onError: () => void
 ): void {
+
+	if (isBot()) config!.stopAll = true;
+
+	if (config?.stopAll || config?.stopDataEvent) {
+		console.error('Sending email is disabled!')
+		return;
+	}
 
 	let payload: FormData = new FormData();
 

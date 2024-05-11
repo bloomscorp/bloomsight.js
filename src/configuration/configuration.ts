@@ -1,6 +1,6 @@
 import {IConfig} from "./interface/config";
 
-export let config: IConfig | null = null;
+export let config: IConfig;
 
 const defaultConfig: Partial<IConfig> = {
 	stopSimpleEvent: false,
@@ -8,28 +8,21 @@ const defaultConfig: Partial<IConfig> = {
 	stopPageViewEvent: false,
 	stopAll: false,
 	logOnly: false,
-	observePageViaWebAPI: true
 }
 
-export function areMandatoryPropertyAvailable(appConfig: any): boolean {
+export function isConfiguredProperly(appConfig: any): boolean {
 	return (
 		appConfig.hasOwnProperty('propertyToken') &&
 		appConfig.hasOwnProperty('isDevelopmentMode')
 	);
 }
 
-export function initConfig(appConfig: IConfig): IConfig {
+export function initConfig(appConfig: IConfig): void {
 	config = {...defaultConfig, ...appConfig};
 
 	if (isDevelopmentMode()) {
 		console.log('configuration: ', config);
 	}
-
-	return config;
-}
-
-export function isConfiguredProperly(): boolean {
-	return !!resolvePropertyToken();
 }
 
 export function resolvePropertyToken(): string {

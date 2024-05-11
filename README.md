@@ -84,16 +84,15 @@ For CDN
 
 Below is the table with all the possible options that can be configured.
 
-| Option                 | Type      | Description                                                                                                                                 | Mandatory | Default |
-|:-----------------------|:----------|:--------------------------------------------------------------------------------------------------------------------------------------------|:----------|:--------|
-| `propertyToken`        | `string`  | [bloomsight.io](https://bloomsight.io) property token                                                                                       | ✅         | NA      |
-| `isDevelopmentMode`    | `boolean` | if `true`, then logs data in the browser console                                                                                            | ✅         | NA      |
-| `observePageViaWebAPI` | `boolean` | if `true`, will detect page view event based on web APIs. However, if `false`, `pageViewObserver` should be used to trigger page view event | ❌         | `true`  |
-| `stopSimpleEvent`      | `boolean` | stops only simple event tracking                                                                                                            | ❌         | `false` |
-| `stopDataEvent`        | `boolean` | stops only data event tracking                                                                                                              | ❌         | `false` |
-| `stopPageViewEvent`    | `boolean` | stops only page view event tracking                                                                                                         | ❌         | `false` |
-| `stopAll`              | `boolean` | stops all event tracking                                                                                                                    | ❌         | `false` |
-| `logOnly`              | `boolean` | tracks event but doesn't save to database. Should be used only when `isDevelopmentMode: true`                                               | ❌         | `false` |
+| Option              | Type      | Description                                                                                   | Mandatory | Default |
+|:--------------------|:----------|:----------------------------------------------------------------------------------------------|:----------|:--------|
+| `propertyToken`     | `string`  | [bloomsight.io](https://bloomsight.io) property token                                         | ✅         | NA      |
+| `isDevelopmentMode` | `boolean` | if `true`, then logs data in the browser console                                              | ✅         | NA      |
+| `stopSimpleEvent`   | `boolean` | stops only simple event tracking                                                              | ❌         | `false` |
+| `stopDataEvent`     | `boolean` | stops only data event tracking                                                                | ❌         | `false` |
+| `stopPageViewEvent` | `boolean` | stops only page view event tracking                                                           | ❌         | `false` |
+| `stopAll`           | `boolean` | stops all event tracking                                                                      | ❌         | `false` |
+| `logOnly`           | `boolean` | tracks event but doesn't save to database. Should be used only when `isDevelopmentMode: true` | ❌         | `false` |
 
 ### Simple Event
 
@@ -138,33 +137,11 @@ resolveDataEvent(
 
 ### Page View Event
 
-By default, page view events are tracked automatically via web APIs. This approach is recommended mostly for vanilla projects where a `load` event is trigged once a new page is loaded.
+Use `pageViewObserver` to trigger page view events once your page is loaded. Ideally, the function should be triggered based on `DOMContentLoaded` or `load` event.
 
-However, frameworks like `Angular`, `React` etc doesn't work that way. So, it is recommended to pass `observePageViaWebAPI` as `false` and use `pageViewObserver` to trigger page view events.
+> P.S: It is recommended to use appropriate library as per your framework from [here]() which will
+> handle page view events automatically.
 
-> P.S: It is recommened to use appropriate library as per your framework from [here]()
-
-Here is an example in Angular,
-
-```ts
-import {pageViewObserver} from '@bloomscorp/bloomsight.js';
-
-export class AppComponent implements OnInit {
-
-	constructor(
-		private router: Router
-	) {
-	}
-
-	ngOnInit() {
-		this.router.events.subscribe(event => {
-			if (event instanceof NavigationEnd) {
-				pageViewObserver();
-			}
-		})
-	}
-}
-```
 
 ### Send Email
 

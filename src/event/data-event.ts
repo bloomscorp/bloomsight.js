@@ -17,7 +17,10 @@ export function resolveDataEvent(
 
 	if (isBot()) config!.stopAll = true;
 
-	if (config?.stopAll || config?.stopDataEvent) return;
+	if (config?.stopAll || config?.stopDataEvent) {
+		console.error('Tracking data event is disabled!')
+		return;
+	}
 
 	const payload: IDataEventPayload = {
 		property: resolvePropertyToken(),
