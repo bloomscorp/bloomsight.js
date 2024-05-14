@@ -8,7 +8,7 @@ function validateProperty(propertyToken: string, hostname: string): Promise<bool
 			(): void => {},
 			(): void => {},
 			(metadata: IPropertyMetadata): void => {
-				resolve(metadata.name === hostname);
+				resolve(metadata.name.replace(/^www\./, '') === hostname.replace(/^www\./, ''));
 			},
 			(error: string): void => {
 				reject('unable to validate bloomsight property token!');
