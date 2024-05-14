@@ -7,7 +7,7 @@ import {logSimpleEvent} from "../transmission/simple-event-transmission";
 import {isBot} from "../utils/bot-handler";
 import {isNewUser, resolveUserId} from "../user/user";
 import {retrieveEventList, storeEventList} from "./event";
-import {resolveActiveUrl} from "../utils/browser-api";
+import {resolveSegmentUrl} from "../utils/browser-api";
 
 export function resolveSimpleEvent(
 	eventToken: string,
@@ -32,7 +32,7 @@ export function resolveSimpleEvent(
 		browserName: resolveBrowser(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
-		url: resolveActiveUrl() || ''
+		url: resolveSegmentUrl() || ''
 	};
 
 	// TODO: re-think this implementation

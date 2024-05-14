@@ -15,6 +15,10 @@ export function resolveActiveUrl(): string {
 	return isBrowser() ? window.location.href : '';
 }
 
+export function resolveSegmentUrl(): string {
+	return isBrowser() ? window.location.pathname : '';
+}
+
 export function resolveUserAgent(): string {
 	return isBrowser() ? window.navigator.userAgent : '';
 }

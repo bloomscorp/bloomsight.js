@@ -10,7 +10,7 @@ import {resolveUTMData} from "../utils/utm-resolver";
 import {isBot} from "../utils/bot-handler";
 import {isNewUser, resolveUserId} from "../user/user";
 import {retrieveEventList, storeEventList} from "./event";
-import {resolveActiveUrl, resolveDocumentReferrer, resolveDocumentTitle} from "../utils/browser-api";
+import {resolveActiveUrl, resolveDocumentReferrer, resolveDocumentTitle, resolveSegmentUrl} from "../utils/browser-api";
 
 const REFERRED_URL_KEY: string = 'startUrl';
 const PAGEVIEW_EVENT: string = 'SITE_VISITED';
@@ -61,7 +61,7 @@ export function resolvePageViewEvent(
 		browserName: resolveBrowser(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
-		url: resolveActiveUrl() || '',
+		url: resolveSegmentUrl() || '',
 		title: resolveDocumentTitle() || '',
 		utmCampaign: utmInfo.utmCampaign,
 		utmContent: utmInfo.utmContent,

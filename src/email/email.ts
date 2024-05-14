@@ -3,7 +3,7 @@ import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../l
 import {isDevelopmentMode} from "../configuration/configuration";
 import {transferEmail} from "../transmission/email-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
-import {resolveActiveUrl} from "../utils/browser-api";
+import {resolveSegmentUrl} from "../utils/browser-api";
 
 export function sendEmail(
 	engineId: string,
@@ -27,7 +27,7 @@ export function sendEmail(
 	payload.append(`senderInfo[countryCode]`, resolveCountry());
 	payload.append(`senderInfo[region]`, resolveRegion());
 	payload.append(`senderInfo[city]`, resolveCity());
-	payload.append(`senderInfo[url]`, resolveActiveUrl());
+	payload.append(`senderInfo[url]`, resolveSegmentUrl());
 
 	emailMetaData.forEach((item: FormDataEntryValue, key: string) => {
 		payload.append(`metadata[${key}]`, item);
