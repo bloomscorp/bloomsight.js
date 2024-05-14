@@ -1,5 +1,12 @@
 
 
+## [0.3.13](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.12...v0.3.13) (2024-05-14)
+
+
+### Bug Fixes
+
+* resolve url without base url ([5286a49](https://github.com/bloomscorp/bloomsight.js/commit/5286a4986c2bd3d181e5727b5016d2b69249f282))
+
 ## [0.3.12](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.11...v0.3.12) (2024-05-14)
 
 ## [0.3.11](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.10...v0.3.11) (2024-05-14)
