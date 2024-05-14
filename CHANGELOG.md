@@ -1,5 +1,12 @@
 
 
+## [0.3.11](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.10...v0.3.11) (2024-05-14)
+
+
+### Bug Fixes
+
+* handle www while validating hostname ([4ef2c44](https://github.com/bloomscorp/bloomsight.js/commit/4ef2c4404a7ccc4808aa11888931563e278197c6))
+
 ## [0.3.10](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.9...v0.3.10) (2024-05-11)
 
 
