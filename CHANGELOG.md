@@ -1,5 +1,7 @@
 
 
+## [0.3.12](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.11...v0.3.12) (2024-05-14)
+
 ## [0.3.11](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.10...v0.3.11) (2024-05-14)
 
 
