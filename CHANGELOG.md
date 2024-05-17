@@ -1,5 +1,17 @@
 
 
+## [0.3.14](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.13...v0.3.14) (2024-05-17)
+
+
+### Bug Fixes
+
+* add fix for debounce issue ([dbfbfac](https://github.com/bloomscorp/bloomsight.js/commit/dbfbfac3ad699102b38c2d8951ae87b5cc6051c9))
+
+
+### Performance Improvements
+
+* optimise location metadata API request ([682b4e1](https://github.com/bloomscorp/bloomsight.js/commit/682b4e18f856b6a264c348de8418c81a3ac42d5c))
+
 ## [0.3.13](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.12...v0.3.13) (2024-05-14)
 
 
