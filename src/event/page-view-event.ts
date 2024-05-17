@@ -15,23 +15,22 @@ import {resolveActiveUrl, resolveDocumentReferrer, resolveDocumentTitle, resolve
 const REFERRED_URL_KEY: string = 'startUrl';
 const PAGEVIEW_EVENT: string = 'SITE_VISITED';
 
-let _hasInitialPageViewOccurred: boolean = false;
-let _debounce: boolean = false;
+let pageViewCount: number = 0;
+
+// let _hasInitialPageViewOccurred: boolean = false;
+// let _debounce: boolean = false;
 
 export function pageViewObserver(): void {
-	if (!_hasInitialPageViewOccurred) {
-		resolvePageViewEvent(
-			true,
-			resolveUTMData(resolveActiveUrl())
-		);
+	pageViewCount = parseInt(retrieve("bs-page-views")) || 0;
 
-		_hasInitialPageViewOccurred = true;
-	} else {
-		resolvePageViewEvent(
-			false,
-			resolveUTMData(resolveActiveUrl())
-		);
+	if (retrieve("startUrl") == resolveActiveUrl()) {
+		pageViewCount = 0;
 	}
+
+	resolvePageViewEvent(
+		pageViewCount == 0,
+		resolveUTMData(resolveActiveUrl())
+	);
 }
 
 function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {
@@ -86,16 +85,17 @@ export function resolvePageViewEvent(
 		storeEventList([...previouslyTriggeredEventList, PAGEVIEW_EVENT]);
 	}
 
-	if (!isFirstPageViewOccurrence && !_debounce) {
-		_debounce = true;
+	if (pageViewCount == 1) {
 		payload.debounce = true;
 	}
 
 	if (isDevelopmentMode())
 		console.log('page view data: ', payload);
 
-	if (config?.logOnly)
+	if (config?.logOnly) {
 		store('startUrl', resolveActiveUrl());
+		store("bs-page-views", (pageViewCount + 1).toString());
+	}
 
 	logPageViewEvent(
 		payload,
@@ -111,6 +111,7 @@ export function resolvePageViewEvent(
 		},
 		(): void => {
 			store('startUrl', resolveActiveUrl());
+			store("bs-page-views", (pageViewCount + 1).toString());
 		}
 	);
 }
