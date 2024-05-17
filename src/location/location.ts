@@ -1,4 +1,4 @@
-import {retrieve, store} from "../utils/session-storage";
+import {hasKey, retrieve, store} from "../utils/session-storage";
 import {ILocationInfo} from "./interface/location-info";
 import {isDevelopmentMode} from "../configuration/configuration";
 import {resolveLocation} from "../transmission/location-transmission";
@@ -10,9 +10,24 @@ const LOCATION_COUNTRY_KEY: string = 'country';
 
 export function initLocation(callback: () => void): void {
 
+	if (isLocationMetaDataAvailableForCurrentSession()) {
+
+		if (isDevelopmentMode()) {
+			console.log(`ip: ${retrieve(LOCATION_IP_KEY)}`);
+			console.log(`city: ${retrieve(LOCATION_CITY_KEY)}`);
+			console.log(`region: ${retrieve(LOCATION_REGION_KEY)}`);
+			console.log(`country: ${retrieve(LOCATION_COUNTRY_KEY)}`);
+		}
+
+		callback();
+		return;
+	}
+
 	resolveLocation(
-		(): void => {},
-		(response: ILocationInfo): void => {},
+		(): void => {
+		},
+		(response: ILocationInfo): void => {
+		},
 		(response: ILocationInfo): void => {
 			saveLocationInfoToSessionStorage(response);
 		},
@@ -37,6 +52,13 @@ function saveLocationInfoToSessionStorage(info: ILocationInfo): void {
 	console.log(`city: ${info.city}`);
 	console.log(`region: ${info.region}`);
 	console.log(`country: ${info.country}`);
+}
+
+function isLocationMetaDataAvailableForCurrentSession(): boolean {
+	return hasKey(LOCATION_IP_KEY) &&
+		hasKey(LOCATION_CITY_KEY) &&
+		hasKey(LOCATION_REGION_KEY) &&
+		hasKey(LOCATION_COUNTRY_KEY);
 }
 
 export function resolveIPAddress(): string {

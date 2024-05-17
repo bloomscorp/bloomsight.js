@@ -12,6 +12,13 @@ export function retrieve(key: string): string {
 	return (value === null) ? '' : value;
 }
 
+export function hasKey(key: string): boolean {
+	if (!isBrowser()) return false;
+
+	const value: string | null = localStorage.getItem(key);
+	return value !== null;
+}
+
 export function clear(): void {
 	if (!isBrowser()) return;
 	localStorage.clear();
