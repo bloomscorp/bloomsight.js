@@ -1,7 +1,7 @@
 import {ISimpleEventPayload} from "./interface/simple-event-payload";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
-import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
+import {config, isDevelopmentMode, isProperConfigProvided, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {logSimpleEvent} from "../transmission/simple-event-transmission";
 import {isBot} from "../utils/bot-handler";
@@ -16,8 +16,13 @@ export function resolveSimpleEvent(
 
 	if (isBot()) config!.stopAll = true;
 
+	if (!isProperConfigProvided) {
+		console.error('bloomsight.js: propertyToken, isDevelopmentMode are mandatory parameters');
+		return;
+	}
+
 	if (config?.stopAll || config?.stopSimpleEvent) {
-		console.error('Tracking simple event is disabled!')
+		console.error('bloomsight.js: tracking simple event is disabled!')
 		return;
 	}
 

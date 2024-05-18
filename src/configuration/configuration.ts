@@ -1,6 +1,7 @@
 import {IConfig} from "./interface/config";
 
 export let config: IConfig;
+export let isProperConfigProvided: boolean = false;
 
 const defaultConfig: Partial<IConfig> = {
 	stopSimpleEvent: false,
@@ -12,13 +13,14 @@ const defaultConfig: Partial<IConfig> = {
 
 export function isConfiguredProperly(appConfig: any): boolean {
 	return (
-		appConfig.hasOwnProperty('propertyToken') &&
+		(appConfig.hasOwnProperty('propertyToken') && appConfig.propertyToken != '') &&
 		appConfig.hasOwnProperty('isDevelopmentMode')
 	);
 }
 
 export function initConfig(appConfig: IConfig): void {
 	config = {...defaultConfig, ...appConfig};
+	isProperConfigProvided = true;
 
 	if (isDevelopmentMode()) {
 		console.log('configuration: ', config);

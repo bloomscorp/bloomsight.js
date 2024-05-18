@@ -1,5 +1,5 @@
 import {isBot} from "../utils/bot-handler";
-import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
+import {config, isDevelopmentMode, isProperConfigProvided, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
@@ -17,8 +17,13 @@ export function resolveDataEvent(
 
 	if (isBot()) config!.stopAll = true;
 
+	if (!isProperConfigProvided) {
+		console.error('bloomsight.js: propertyToken, isDevelopmentMode are mandatory parameters');
+		return;
+	}
+
 	if (config?.stopAll || config?.stopDataEvent) {
-		console.error('Tracking data event is disabled!')
+		console.error('bloomsight.js: tracking data event is disabled!')
 		return;
 	}
 

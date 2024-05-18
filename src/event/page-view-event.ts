@@ -1,4 +1,4 @@
-import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
+import {config, isDevelopmentMode, isProperConfigProvided, resolvePropertyToken} from "../configuration/configuration";
 import {initLocation, resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {IPageViewEventPayload} from "./interface/page-view-event-payload";
@@ -43,8 +43,13 @@ export function resolvePageViewEvent(
 
 	if (isBot()) config!.stopAll = true;
 
+	if (!isProperConfigProvided) {
+		console.error('bloomsight.js: propertyToken, isDevelopmentMode are mandatory parameters');
+		return;
+	}
+
 	if (config?.stopAll || config?.stopPageViewEvent) {
-		console.error('Tracking page view event is disabled!')
+		console.error('bloomsight.js: tracking page view event is disabled!')
 		return;
 	}
 

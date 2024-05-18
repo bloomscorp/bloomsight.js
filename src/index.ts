@@ -14,7 +14,7 @@ import {isBrowser, resolveHost} from "./utils/browser-api";
 function init(appConfig: IConfig): void {
 
 	if (!isConfiguredProperly(appConfig)) {
-		console.error('propertyToken, isDevelopmentMode are mandatory parameters');
+		console.error('bloomsight.js: propertyToken, isDevelopmentMode are mandatory parameters');
 		return;
 	}
 
@@ -24,7 +24,7 @@ function init(appConfig: IConfig): void {
 		.then((isValid: boolean): void => {
 
 			if (!isValid) {
-				console.error(`propertyToken is not valid for ${resolveHost()}`);
+				console.error(`bloomsight.js: propertyToken is not valid for ${resolveHost()}`);
 				config.stopAll = true;
 			} else {
 				config.stopAll = false;
