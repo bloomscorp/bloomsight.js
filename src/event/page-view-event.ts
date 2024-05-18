@@ -1,5 +1,5 @@
 import {config, isDevelopmentMode, resolvePropertyToken} from "../configuration/configuration";
-import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
+import {initLocation, resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
 import {IPageViewEventPayload} from "./interface/page-view-event-payload";
 import {IUTMData} from "./interface/utm-data";
@@ -17,20 +17,19 @@ const PAGEVIEW_EVENT: string = 'SITE_VISITED';
 
 let pageViewCount: number = 0;
 
-// let _hasInitialPageViewOccurred: boolean = false;
-// let _debounce: boolean = false;
-
 export function pageViewObserver(): void {
-	pageViewCount = parseInt(retrieve("bs-page-views")) || 0;
+	// page view will be logged only after the user has spent 2+ seconds in the page
+	setTimeout(
+		() => initLocation((): void => {
+			pageViewCount = parseInt(retrieve("bs-page-views")) || 0;
 
-	if (retrieve("startUrl") == resolveActiveUrl()) {
-		pageViewCount = 0;
-	}
+			if (retrieve("startUrl") == resolveActiveUrl()) pageViewCount = 0;
 
-	resolvePageViewEvent(
-		pageViewCount == 0,
-		resolveUTMData(resolveActiveUrl())
-	);
+			resolvePageViewEvent(
+				pageViewCount == 0,
+				resolveUTMData(resolveActiveUrl())
+			);
+		}), 2000)
 }
 
 function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {

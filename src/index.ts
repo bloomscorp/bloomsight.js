@@ -1,5 +1,4 @@
 import {initPlatform} from "./platform/platform";
-import {initLocation} from "./location/location";
 import {initUser} from "./user/user";
 import {initSession} from "./session/session";
 import {pageViewObserver} from "./event/page-view-event";
@@ -31,12 +30,9 @@ function init(appConfig: IConfig): void {
 				config.stopAll = false;
 			}
 
-			initLocation((): void => {
-					initPlatform();
-					initUser();
-					initSession();
-				}
-			);
+			initPlatform();
+			initUser();
+			initSession();
 		})
 		.catch((error: string): void => {
 			console.error(error)
