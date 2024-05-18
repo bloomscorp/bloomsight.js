@@ -1,5 +1,12 @@
 
 
+## [0.3.15](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.14...v0.3.15) (2024-05-18)
+
+
+### Performance Improvements
+
+* improve page view tracking with location info ([794f1f0](https://github.com/bloomscorp/bloomsight.js/commit/794f1f0242e99fb936e4645444b34d9f546a4db9))
+
 ## [0.3.14](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.13...v0.3.14) (2024-05-17)
 
 

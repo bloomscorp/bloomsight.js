@@ -1,6 +1,6 @@
 {
 	"name": "@bloomscorp/bloomsight.js",
-	"version": "0.3.14",
+	"version": "0.3.15",
 	"description": "A client side javascript library to work with bloomsight.io",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
