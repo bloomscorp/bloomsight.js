@@ -1,5 +1,12 @@
 
 
+# [0.4.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.15...v0.4.0) (2024-05-21)
+
+
+### Features
+
+* add event resolution using DOM ([988d55b](https://github.com/bloomscorp/bloomsight.js/commit/988d55b51082356423e4ab12be3d34b5f6e3f022))
+
 ## [0.3.15](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.14...v0.3.15) (2024-05-18)
 
 
