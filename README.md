@@ -21,6 +21,7 @@ version of the library
 
 ```
 https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js
+https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/dom.js 
 ```
 
 ## Usage/Examples
@@ -150,11 +151,13 @@ Use `pageViewObserver` to trigger page view events once your page is loaded. Ide
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/dom.js"></script> // mandatory for DOM resolution
 </head>
 <body>
 
 
-	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+	
 	<script>
 		init({
 			propertyToken: '65d72f0b5e990c6028790156',
@@ -163,10 +166,7 @@ Use `pageViewObserver` to trigger page view events once your page is loaded. Ide
 		});
 	</script>
 	<script>
-		window.addEventListener(
-			'DOMContentLoaded', 
-			() => setTimeout(pageViewObserver, 5000)
-		);
+		pageViewObserver();
 	</script>
 	<script src="./app.js"></script>
 </body>
@@ -203,6 +203,49 @@ sendEmail(
 | `emailMetaData`   | `FormData`   | attachment & variables used in the template & their respective values in key, value format | ❌         | NA      |
 | `onSuccess`       | `() => void` | callback for operation success event                                                       | ❌         | NA      |
 | `onError`         | `() => void` | callback for operation error event                                                         | ❌         | NA      |
+
+## Other Integration Options
+If the framework impose limited control over the codebase but one have access to JS snippets, use the DOM based 
+event resolution approach as below to use our library.
+
+1. Identify the DOM element where you want to integrate the event handler.
+2. Find a unique HTML element selector that can be used to select the DOM element. Note, the selector should follow standards as mentioned [here](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector).
+3. Use the `resolveDOM` function to pass on the selector and the event handler.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/production.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@<VERSION>/umd/dom.js"></script>
+</head>
+<body>
+
+
+	
+	<script>
+		init({
+			propertyToken: '65d72f0b5e990c6028790156',
+			isDevelopmentMode: true,
+			...
+		});
+	</script>
+	<script>
+		resolveDOM("button[type=submit]", () => resolveSimpleEvent('61d895h922355b6ba6a4587a'));
+	</script>
+	<script src="./app.js"></script>
+</body>
+
+</html>
+```
+
+> Note: Make sure the element selector is unique within the page. If there are multiple elements present
+> in the page with same selector, then only the first element will be considered for event resolution.
+> 
 
 ## License
 
