@@ -7,5 +7,6 @@ export function storeEventList(eventList: string[]): void {
 }
 
 export function retrieveEventList(): string[] {
+	if (retrieve(EVENT_LIST_KEY) === '') return [];
 	return JSON.parse(retrieve(EVENT_LIST_KEY));
 }
