@@ -6,11 +6,11 @@ function validateProperty(propertyToken: string, hostname: string): Promise<bool
 	return new Promise((resolve, reject): void => {
 		resolvePropertyMetadata(
 			propertyToken,
-			(): void => {},
+			(): void => {
+				if (isDevelopmentMode()) resolve(true);
+			},
 			(): void => {},
 			(metadata: IPropertyMetadata): void => {
-				if (isDevelopmentMode()) resolve(true);
-
 				resolve(metadata.name.replace(/^www\./, '') === hostname.replace(/^www\./, ''));
 			},
 			(error: string): void => {

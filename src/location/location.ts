@@ -1,22 +1,22 @@
-import {hasKey, retrieve, store} from "../utils/session-storage";
+import {hasKeyInSessionStore, retrieveFromSessionStore, storeInSessionStore} from "../utils/session-storage";
 import {ILocationInfo} from "./interface/location-info";
 import {isDevelopmentMode} from "../configuration/configuration";
 import {resolveLocation} from "../transmission/location-transmission";
 
-const LOCATION_IP_KEY: string = 'ip';
-const LOCATION_CITY_KEY: string = 'city';
-const LOCATION_REGION_KEY: string = 'region';
-const LOCATION_COUNTRY_KEY: string = 'country';
+const LOCATION_IP_KEY: string = 'bs-ip';
+const LOCATION_CITY_KEY: string = 'bs-city';
+const LOCATION_REGION_KEY: string = 'bs-region';
+const LOCATION_COUNTRY_KEY: string = 'bs-country';
 
 export function initLocation(callback: () => void): void {
 
 	if (isLocationMetaDataAvailableForCurrentSession()) {
 
 		if (isDevelopmentMode()) {
-			console.log(`ip: ${retrieve(LOCATION_IP_KEY)}`);
-			console.log(`city: ${retrieve(LOCATION_CITY_KEY)}`);
-			console.log(`region: ${retrieve(LOCATION_REGION_KEY)}`);
-			console.log(`country: ${retrieve(LOCATION_COUNTRY_KEY)}`);
+			console.log(`ip: ${retrieveFromSessionStore(LOCATION_IP_KEY)}`);
+			console.log(`city: ${retrieveFromSessionStore(LOCATION_CITY_KEY)}`);
+			console.log(`region: ${retrieveFromSessionStore(LOCATION_REGION_KEY)}`);
+			console.log(`country: ${retrieveFromSessionStore(LOCATION_COUNTRY_KEY)}`);
 		}
 
 		callback();
@@ -41,10 +41,10 @@ export function initLocation(callback: () => void): void {
 }
 
 function saveLocationInfoToSessionStorage(info: ILocationInfo): void {
-	store(LOCATION_IP_KEY, info.ip);
-	store(LOCATION_CITY_KEY, info.city);
-	store(LOCATION_REGION_KEY, info.region);
-	store(LOCATION_COUNTRY_KEY, info.country);
+	storeInSessionStore(LOCATION_IP_KEY, info.ip);
+	storeInSessionStore(LOCATION_CITY_KEY, info.city);
+	storeInSessionStore(LOCATION_REGION_KEY, info.region);
+	storeInSessionStore(LOCATION_COUNTRY_KEY, info.country);
 
 	if (!isDevelopmentMode()) return;
 
@@ -55,24 +55,24 @@ function saveLocationInfoToSessionStorage(info: ILocationInfo): void {
 }
 
 function isLocationMetaDataAvailableForCurrentSession(): boolean {
-	return hasKey(LOCATION_IP_KEY) &&
-		hasKey(LOCATION_CITY_KEY) &&
-		hasKey(LOCATION_REGION_KEY) &&
-		hasKey(LOCATION_COUNTRY_KEY);
+	return hasKeyInSessionStore(LOCATION_IP_KEY) &&
+		hasKeyInSessionStore(LOCATION_CITY_KEY) &&
+		hasKeyInSessionStore(LOCATION_REGION_KEY) &&
+		hasKeyInSessionStore(LOCATION_COUNTRY_KEY);
 }
 
 export function resolveIPAddress(): string {
-	return retrieve(LOCATION_IP_KEY);
+	return retrieveFromSessionStore(LOCATION_IP_KEY);
 }
 
 export function resolveCountry(): string {
-	return retrieve(LOCATION_COUNTRY_KEY);
+	return retrieveFromSessionStore(LOCATION_COUNTRY_KEY);
 }
 
 export function resolveRegion(): string {
-	return retrieve(LOCATION_REGION_KEY);
+	return retrieveFromSessionStore(LOCATION_REGION_KEY);
 }
 
 export function resolveCity(): string {
-	return retrieve(LOCATION_CITY_KEY);
+	return retrieveFromSessionStore(LOCATION_CITY_KEY);
 }

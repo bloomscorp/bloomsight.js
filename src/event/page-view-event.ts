@@ -5,7 +5,7 @@ import {IPageViewEventPayload} from "./interface/page-view-event-payload";
 import {IUTMData} from "./interface/utm-data";
 import {logPageViewEvent} from "../transmission/page-view-event-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
-import {retrieve, store} from "../utils/session-storage";
+import {retrieveFromSessionStore, storeInSessionStore} from "../utils/session-storage";
 import {resolveUTMData} from "../utils/utm-resolver";
 import {isBot} from "../utils/bot-handler";
 import {isNewUser, resolveUserId} from "../user/user";
@@ -21,9 +21,9 @@ export function pageViewObserver(): void {
 	// page view will be logged only after the user has spent 2+ seconds in the page
 	setTimeout(
 		() => initLocation((): void => {
-			pageViewCount = parseInt(retrieve("bs-page-views")) || 0;
+			pageViewCount = parseInt(retrieveFromSessionStore("bs-page-views")) || 0;
 
-			if (retrieve("startUrl") == resolveActiveUrl()) pageViewCount = 0;
+			if (retrieveFromSessionStore("startUrl") == resolveActiveUrl()) pageViewCount = 0;
 
 			resolvePageViewEvent(
 				pageViewCount == 0,
@@ -33,7 +33,7 @@ export function pageViewObserver(): void {
 }
 
 function resolveReferredUrlFromSession(isFirstPageViewOccurrence: boolean): string {
-	return isFirstPageViewOccurrence ? resolveDocumentReferrer() : retrieve(REFERRED_URL_KEY);
+	return isFirstPageViewOccurrence ? resolveDocumentReferrer() : retrieveFromSessionStore(REFERRED_URL_KEY);
 }
 
 export function resolvePageViewEvent(
@@ -97,8 +97,8 @@ export function resolvePageViewEvent(
 		console.log('page view data: ', payload);
 
 	if (config?.logOnly) {
-		store('startUrl', resolveActiveUrl());
-		store("bs-page-views", (pageViewCount + 1).toString());
+		storeInSessionStore('startUrl', resolveActiveUrl());
+		storeInSessionStore("bs-page-views", (pageViewCount + 1).toString());
 	}
 
 	logPageViewEvent(
@@ -114,8 +114,8 @@ export function resolvePageViewEvent(
 			if (isDevelopmentMode()) console.log(`event log error: ${error}`);
 		},
 		(): void => {
-			store('startUrl', resolveActiveUrl());
-			store("bs-page-views", (pageViewCount + 1).toString());
+			storeInSessionStore('startUrl', resolveActiveUrl());
+			storeInSessionStore("bs-page-views", (pageViewCount + 1).toString());
 		}
 	);
 }
