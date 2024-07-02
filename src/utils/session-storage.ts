@@ -1,25 +1,25 @@
 import {isBrowser} from "./browser-api";
 
-export function store(key: string, value: string): void {
+export function storeInSessionStore(key: string, value: string): void {
 	if (!isBrowser()) return;
 	sessionStorage.setItem(key, value);
 }
 
-export function retrieve(key: string): string {
+export function retrieveFromSessionStore(key: string): string {
 	if (!isBrowser()) return '';
 
 	const value: string | null = sessionStorage.getItem(key);
 	return (value === null) ? '' : value;
 }
 
-export function hasKey(key: string): boolean {
+export function hasKeyInSessionStore(key: string): boolean {
 	if (!isBrowser()) return false;
 
 	const value: string | null = sessionStorage.getItem(key);
 	return value !== null;
 }
 
-export function clear(): void {
+export function clearSessionStore(): void {
 	if (!isBrowser()) return;
 	sessionStorage.clear();
 }
