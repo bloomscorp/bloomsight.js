@@ -11,8 +11,10 @@ import {isBot} from "../utils/bot-handler";
 import {isNewUser, resolveUserId} from "../user/user";
 import {retrieveEventList, storeEventList} from "./event";
 import {resolveActiveUrl, resolveDocumentReferrer, resolveDocumentTitle, resolveSegmentUrl} from "../utils/browser-api";
+import {retrieveFromLocalStore, storeInLocalStore} from "../utils/local-storage";
+import {SESSION_DEBOUNCE_TRACKER_KEY} from "../session/session";
 
-const REFERRED_URL_KEY: string = 'startUrl';
+const REFERRED_URL_KEY: string = 'bs-start-url';
 const PAGEVIEW_EVENT: string = 'SITE_VISITED';
 
 let pageViewCount: number = 0;
@@ -89,8 +91,9 @@ export function resolvePageViewEvent(
 		storeEventList([...previouslyTriggeredEventList, PAGEVIEW_EVENT]);
 	}
 
-	if (pageViewCount == 1) {
+	if (pageViewCount == 1 && !retrieveFromLocalStore(SESSION_DEBOUNCE_TRACKER_KEY)) {
 		payload.debounce = true;
+		storeInLocalStore(SESSION_DEBOUNCE_TRACKER_KEY, 'true');
 	}
 
 	if (isDevelopmentMode())

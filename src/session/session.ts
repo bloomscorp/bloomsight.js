@@ -1,4 +1,4 @@
-import {retrieveFromLocalStore, storeInLocalStore} from "../utils/local-storage";
+import {removeKeyFromLocalStore, retrieveFromLocalStore, storeInLocalStore} from "../utils/local-storage";
 import {retrieveFromSessionStore, storeInSessionStore} from "../utils/session-storage";
 import {storeEventList} from "../event/event";
 import {resolveWindow} from "../utils/browser-api";
@@ -10,6 +10,7 @@ const SESSION_ACTIVE_TABS_COUNT_KEY: string = "bs-active-tabs-count";
 const SESSION_TAB_TRACKER_KEY: string = "bs-tab-tracked";
 const SESSION_TENURE_IN_MINUTES: number = 30;
 const SESSION_OBSERVER_COOLING_PERIOD_IN_MINUTES: number = 1;
+export const SESSION_DEBOUNCE_TRACKER_KEY: string = "bs-debounce-tracked";
 
 export let isNewSession: boolean = false;
 
@@ -96,6 +97,7 @@ function isSessionExpired(): boolean {
 
 function resetSession(): void {
 	storeEventList([]);
+	removeKeyFromLocalStore(SESSION_DEBOUNCE_TRACKER_KEY);
 	setSessionData();
 	isNewSession = true;
 }

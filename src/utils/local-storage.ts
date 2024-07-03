@@ -19,6 +19,13 @@ export function hasKeyInLocalStore(key: string): boolean {
 	return value !== null;
 }
 
+export function removeKeyFromLocalStore(key: string) {
+	if (!isBrowser()) return;
+	if (!hasKeyInLocalStore(key)) return;
+
+	localStorage.removeItem(key);
+}
+
 export function clearLocalStore(): void {
 	if (!isBrowser()) return;
 	localStorage.clear();
