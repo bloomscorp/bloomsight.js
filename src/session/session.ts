@@ -110,7 +110,7 @@ function retrieveSessionExpiry(): number {
 	return +retrieveFromLocalStore(SESSION_EXPIRY_KEY);
 }
 
-function retrieveSessionActiveTabsCount(): number {
+export function retrieveSessionActiveTabsCount(): number {
 	return +retrieveFromLocalStore(SESSION_ACTIVE_TABS_COUNT_KEY);
 }
 
