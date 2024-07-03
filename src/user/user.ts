@@ -1,9 +1,8 @@
-import {retrieve, store} from "../utils/local-storage";
+import {retrieveFromLocalStore, storeInLocalStore} from "../utils/local-storage";
 import {generateUserId} from "../utils/helper";
 import {isDevelopmentMode} from "../configuration/configuration";
 
-const USER_ID_KEY: string = "userId";
-const NEW_USER_TENURE_IN_DAYS: number = 45;
+const USER_ID_KEY: string = "bs-user-token";
 
 export let isNewUser: boolean = false;
 let activeUserId: string = '';
@@ -14,12 +13,14 @@ export function initUser(): void {
 
 function initUserId(): void {
 
-	let isUserIdPresent: boolean = !!retrieve(USER_ID_KEY);
+	let isUserIdPresent: boolean = !!retrieveFromLocalStore(USER_ID_KEY);
 
 	if (isUserIdPresent) {
-		activeUserId = retrieve(USER_ID_KEY);
+		activeUserId = retrieveFromLocalStore(USER_ID_KEY);
+		isNewUser = false;
 	} else {
 		activeUserId = generateUserId();
+		isNewUser = true;
 		storeUserId(activeUserId);
 	}
 
@@ -29,23 +30,16 @@ function initUserId(): void {
 }
 
 function storeUserId(userId: string): void {
-	store(USER_ID_KEY, userId);
+	storeInLocalStore(USER_ID_KEY, userId);
 }
 
 function retrieveUserId(): string {
-	return retrieve(USER_ID_KEY);
+	return retrieveFromLocalStore(USER_ID_KEY);
 }
 
 export function resolveUserId(): string {
 	if (activeUserId) return activeUserId;
 	else return retrieveUserId();
-}
-
-export function hasUserReturnedBeyondNewUserTenureLimit(sessionEndTimeInMilliseconds: number): boolean {
-	const elapsedTimeAfterSessionExpiredInMilliseconds: number = Date.now() - sessionEndTimeInMilliseconds;
-	const allowedUserTenureInMilliseconds: number = NEW_USER_TENURE_IN_DAYS * (24 * 60 * 60 * 1000);
-
-	return elapsedTimeAfterSessionExpiredInMilliseconds > allowedUserTenureInMilliseconds;
 }
 
 export function setUserStatus(isNew: boolean): void {
