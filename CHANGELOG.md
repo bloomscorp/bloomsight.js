@@ -1,5 +1,13 @@
 
 
+## [0.4.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.4.0...v0.4.1) (2024-08-01)
+
+
+### Bug Fixes
+
+* add fix for SyntaxError during JSON.parse ([e0fe5fe](https://github.com/bloomscorp/bloomsight.js/commit/e0fe5fe5c2dd5987cb70a91e05c8f0e8838c3d61))
+* manage debounce on a single session ([6a0dc5e](https://github.com/bloomscorp/bloomsight.js/commit/6a0dc5e5d1e05029066e286429a11ae0d2f55627))
+
 # [0.4.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.3.15...v0.4.0) (2024-05-21)
 
 
