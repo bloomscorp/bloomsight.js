@@ -9,6 +9,7 @@ export interface IPageViewEventPayload {
 	region: string;
 	city: string;
 	browserName: string;
+	browserVersion: string;
 	osName: string;
 	deviceType: string;
 	newUser?: boolean;

@@ -1,6 +1,6 @@
 import {ISimpleEventPayload} from "./interface/simple-event-payload";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
-import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
+import {resolveBrowser, resolveBrowserVersion, resolveDevice, resolveOS} from "../platform/platform";
 import {config, isDevelopmentMode, isProperConfigProvided, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
 import {logSimpleEvent} from "../transmission/simple-event-transmission";
@@ -35,6 +35,7 @@ export function resolveSimpleEvent(
 		countryCode: resolveCountry(),
 		region: resolveRegion(),
 		browserName: resolveBrowser(),
+		browserVersion: resolveBrowserVersion(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
 		url: resolveSegmentUrl() || ''

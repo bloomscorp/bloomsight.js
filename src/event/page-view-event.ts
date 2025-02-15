@@ -1,6 +1,6 @@
 import {config, isDevelopmentMode, isProperConfigProvided, resolvePropertyToken} from "../configuration/configuration";
 import {initLocation, resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
-import {resolveBrowser, resolveDevice, resolveOS} from "../platform/platform";
+import {resolveBrowser, resolveBrowserVersion, resolveDevice, resolveOS} from "../platform/platform";
 import {IPageViewEventPayload} from "./interface/page-view-event-payload";
 import {IUTMData} from "./interface/utm-data";
 import {logPageViewEvent} from "../transmission/page-view-event-transmission";
@@ -64,6 +64,7 @@ export function resolvePageViewEvent(
 		countryCode: resolveCountry(),
 		region: resolveRegion(),
 		browserName: resolveBrowser(),
+		browserVersion: resolveBrowserVersion(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
 		url: resolveSegmentUrl() || '',
