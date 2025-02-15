@@ -24,6 +24,10 @@ export function resolveUserAgent(): string {
 }
 
 // Document
+export function resolveDocument(): Document | null {
+	return isBrowser() ? document : null;
+}
+
 export function resolveDocumentReferrer() : string {
 	return isBrowser() ? document.referrer : '';
 }

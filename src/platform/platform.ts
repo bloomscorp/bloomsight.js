@@ -2,18 +2,23 @@ import {IBrowser} from "./constant/browser";
 import {IOperatingSystem} from "./constant/operating-system";
 import {IDevice} from "./constant/device";
 import {isDevelopmentMode} from "../configuration/configuration";
-import {resolveUserAgent} from "../utils/browser-api";
+import {resolveDocument, resolveUserAgent, resolveWindow} from "../utils/browser-api";
 
 const _userAgent: string = resolveUserAgent();
+const window: Window | null = resolveWindow();
+const document: Document | null = resolveDocument();
+
 
 export function initPlatform(): void {
 	const browser: string = resolveBrowser();
+	const version: string = resolveBrowserVersion();
 	const os: string = resolveOS();
 	const device: string = resolveDevice();
 
 	if (!isDevelopmentMode()) return;
 
 	console.log(`browser: ${browser}`);
+	console.log(`version: ${version}`);
 	console.log(`os: ${os}`);
 	console.log(`device: ${device}`);
 }
@@ -24,27 +29,28 @@ export function resolveBrowser(): IBrowser | string {
 	let verOffset: number = 0;
 
 	switch (true) {
-		case _userAgent.indexOf("Opera") !== -1:
-			return IBrowser.Opera;
-		case _userAgent.indexOf("OPR") !== -1:
-			return IBrowser.Opera_Next;
-		case _userAgent.indexOf("Edge") !== -1:
+		case _userAgent.includes("CriOS"):
+			return IBrowser.Chrome_iOS;
+		case _userAgent.includes("Edge"):
 			return IBrowser.ME_Legacy;
-		case _userAgent.indexOf("Edg") !== -1:
+		case _userAgent.includes("Edg"):
 			return IBrowser.ME_Chromium;
-		case _userAgent.indexOf("Chrome") !== -1:
+		case _userAgent.includes("OPR"):
+			return IBrowser.Opera_Next;
+		case _userAgent.includes("Opera"):
+			return IBrowser.Opera;
+		case _userAgent.includes("Chrome"):
 			return IBrowser.Chrome;
-		case _userAgent.indexOf("Safari") !== -1:
+		case _userAgent.includes("Safari"):
 			return IBrowser.Safari;
-		case _userAgent.indexOf("Firefox") !== -1:
+		case _userAgent.includes("Firefox"):
 			return IBrowser.Firefox;
-		case _userAgent.indexOf("MSIE") !== -1:
-		case _userAgent.indexOf("Trident") !== -1:
+		case _userAgent.includes("MSIE") || _userAgent.includes("Trident"):
 			return IBrowser.IE;
 		case ((nameOffset = _userAgent.lastIndexOf(' ') + 1) < (verOffset = _userAgent.lastIndexOf('/'))):
 			return _userAgent.substring(nameOffset, verOffset);
 		default:
-			return IBrowser.Unknown;
+			return "Unknown";
 	}
 }
 
@@ -55,18 +61,20 @@ export function resolveBrowserVersion(): string {
 
 export function resolveOS(): IOperatingSystem {
 	switch (true) {
-		case _userAgent.indexOf("Windows") !== -1:
-			return IOperatingSystem.Windows;
-		case _userAgent.indexOf("Mac OS") !== -1:
-			return IOperatingSystem.MacOS;
-		case _userAgent.indexOf("Linux") !== -1:
-			return IOperatingSystem.Linux;
-		case _userAgent.indexOf("Android") !== -1:
+		case /Android/i.test(_userAgent):
 			return IOperatingSystem.Android;
-		case _userAgent.indexOf("iOS") !== -1:
-			return IOperatingSystem.iOS;
+		case /Windows/i.test(_userAgent):
+			return IOperatingSystem.Windows;
+		case /iPhone|iPad|iPod/i.test(_userAgent):
+			return IOperatingSystem.iOS
+		case /Mac OS/i.test(_userAgent):
+			return /iPad|Macintosh/.test(_userAgent) && document && 'ontouchend' in document
+				? IOperatingSystem.iOS
+				: IOperatingSystem.MacOS;
+		case /Linux/i.test(_userAgent) && !/Android/i.test(_userAgent):
+			return IOperatingSystem.Linux;
 		default:
-			return IOperatingSystem.Unknown;
+			return IOperatingSystem.Unknown
 	}
 }
 
