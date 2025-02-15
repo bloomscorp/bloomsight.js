@@ -70,16 +70,30 @@ export function resolveOS(): IOperatingSystem {
 	}
 }
 
+function isWebView(): boolean {
+	// User-Agent based detection (WebView indicators)
+	const userAgentCheck: boolean = /WebView|wv/.test(_userAgent) || /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(_userAgent);
+
+	// Feature-based detection (Missing certain properties)
+	const featureCheck: boolean | null = (window && (window.navigator as any)?.standalone === false) ||
+		(window && (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) ||
+		(document && (document.referrer.startsWith('android-app://') || document.referrer.startsWith('ios-app://')));
+
+	return userAgentCheck || !!featureCheck;
+}
+
 export function resolveDevice(): IDevice {
+
+	if (isWebView()) return IDevice.WebView;
+
 	if (
-		/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(_userAgent)
-	) {
-		return IDevice.Tablet;
-	} else if (
-		/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|webOS)/i.test(_userAgent)
-	) {
-		return IDevice.Mobile
-	} else {
-		return IDevice.Desktop;
+		/iPad/i.test(_userAgent) ||
+		(/Macintosh/.test(_userAgent) && document && 'ontouchend' in document)
+	) return IDevice.Tablet;
+
+	if (/Mobile|iPhone|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|hpw|webOS/i.test(_userAgent)) {
+		return IDevice.Mobile;
 	}
+
+	return IDevice.Desktop;
 }
