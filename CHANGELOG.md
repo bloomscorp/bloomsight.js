@@ -1,5 +1,24 @@
 
 
+# [0.5.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.4.1...v0.5.0) (2025-02-16)
+
+
+### Bug Fixes
+
+* improve platform detection ([ba36526](https://github.com/bloomscorp/bloomsight.js/commit/ba365269408bcf6770388ec52318d84198249a91))
+
+
+### Features
+
+* add browser version as metadata ([8871935](https://github.com/bloomscorp/bloomsight.js/commit/887193587295f25fa786637bb1ec7d31231c5cfe))
+* add desktop site mode detection ([58ab759](https://github.com/bloomscorp/bloomsight.js/commit/58ab7597df9c7e9cc56cc1d72223d91094dccc6e))
+* add WebView as a device type ([9a1555f](https://github.com/bloomscorp/bloomsight.js/commit/9a1555f78783926fe126ab4704f35e99db9d45fe))
+
+
+### Performance Improvements
+
+* improve webview detection logic ([a0ed98c](https://github.com/bloomscorp/bloomsight.js/commit/a0ed98cb8d7bf3e04547f99af6a9d1cff53d4c87))
+
 ## [0.4.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.4.0...v0.4.1) (2024-08-01)
 
 
