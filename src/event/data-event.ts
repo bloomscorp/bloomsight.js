@@ -1,7 +1,7 @@
 import {isBot} from "../utils/bot-handler";
 import {config, isDevelopmentMode, isProperConfigProvided, resolvePropertyToken} from "../configuration/configuration";
 import {resolveCity, resolveCountry, resolveIPAddress, resolveRegion} from "../location/location";
-import {resolveBrowser, resolveBrowserVersion, resolveDevice, resolveOS} from "../platform/platform";
+import {isDesktopModeEnabled, resolveBrowser, resolveBrowserVersion, resolveDevice, resolveOS} from "../platform/platform";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {IDataEventPayload} from "./interface/data-event-payload";
 import {logDataEvent} from "../transmission/data-event-transmission";
@@ -40,6 +40,7 @@ export function resolveDataEvent(
 		browserVersion: resolveBrowserVersion(),
 		osName: resolveOS(),
 		deviceType: resolveDevice(),
+		isDesktopModeEnabled: isDesktopModeEnabled(),
 		url: resolveSegmentUrl() || '',
 	};
 

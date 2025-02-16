@@ -79,7 +79,7 @@ export function resolveOS(): IOperatingSystem {
 }
 
 function isWebView(): boolean {
-	
+
 	const userAgentCheck: boolean = !!_userAgent.match(new RegExp(
 		'(WebView|(iPhone|iPod|iPad)(?!.*Safari)|Android.*(;\\s+wv|Version/\\d.\\d\\s+Chrome/\\d+(\\.0){3})|Linux; U; Android)', 'ig')
 	);
@@ -109,4 +109,8 @@ export function resolveDevice(): IDevice {
 	}
 
 	return IDevice.Desktop;
+}
+
+export function isDesktopModeEnabled(): boolean {
+	return window.innerWidth > window.screen.availWidth;
 }

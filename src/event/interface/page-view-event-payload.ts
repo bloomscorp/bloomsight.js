@@ -12,6 +12,7 @@ export interface IPageViewEventPayload {
 	browserVersion: string;
 	osName: string;
 	deviceType: string;
+	isDesktopModeEnabled: boolean;
 	newUser?: boolean;
 	returningUser?: boolean;
 	newSession?: boolean;
