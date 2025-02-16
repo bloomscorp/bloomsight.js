@@ -3,8 +3,8 @@ export function isBrowser(): boolean {
 }
 
 // Window
-export function resolveWindow(): Window | null {
-	return isBrowser() ? window : null;
+export function resolveWindow(): Window {
+	return isBrowser() ? window : {} as Window;
 }
 
 export function resolveHost(): string {
@@ -24,8 +24,8 @@ export function resolveUserAgent(): string {
 }
 
 // Document
-export function resolveDocument(): Document | null {
-	return isBrowser() ? document : null;
+export function resolveDocument(): Document {
+	return isBrowser() ? document : {} as Document;
 }
 
 export function resolveDocumentReferrer() : string {

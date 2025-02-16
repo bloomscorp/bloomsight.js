@@ -5,8 +5,8 @@ import {isDevelopmentMode} from "../configuration/configuration";
 import {resolveDocument, resolveUserAgent, resolveWindow} from "../utils/browser-api";
 
 const _userAgent: string = resolveUserAgent();
-const window: Window | null = resolveWindow();
-const document: Document | null = resolveDocument();
+const window: Window = resolveWindow();
+const document: Document = resolveDocument();
 
 
 export function initPlatform(): void {
@@ -79,15 +79,20 @@ export function resolveOS(): IOperatingSystem {
 }
 
 function isWebView(): boolean {
-	// User-Agent based detection (WebView indicators)
-	const userAgentCheck: boolean = /WebView|wv/.test(_userAgent) || /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(_userAgent);
+	
+	const userAgentCheck: boolean = !!_userAgent.match(new RegExp(
+		'(WebView|(iPhone|iPod|iPad)(?!.*Safari)|Android.*(;\\s+wv|Version/\\d.\\d\\s+Chrome/\\d+(\\.0){3})|Linux; U; Android)', 'ig')
+	);
 
-	// Feature-based detection (Missing certain properties)
-	const featureCheck: boolean | null = (window && (window.navigator as any)?.standalone === false) ||
-		(window && (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) ||
-		(document && (document.referrer.startsWith('android-app://') || document.referrer.startsWith('ios-app://')));
+	const featureCheck: boolean = window.matchMedia('(display-mode: standalone)').matches ||
+		(typeof (window.navigator as any)?.standalone !== 'undefined' && (window.navigator as any)?.standalone) ||
+		document?.referrer?.startsWith('android-app://') ||
+		document?.referrer?.startsWith('ios-app://');
 
-	return userAgentCheck || !!featureCheck;
+	const missingFeatureCheck: boolean = typeof (window.navigator as any)?.userAgentData?.platform === 'undefined';
+
+
+	return userAgentCheck || featureCheck || missingFeatureCheck;
 }
 
 export function resolveDevice(): IDevice {
