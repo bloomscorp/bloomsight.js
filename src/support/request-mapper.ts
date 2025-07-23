@@ -4,7 +4,8 @@ export const GET_PROPERTY_API: string = BASE_URL + '/property/get/{propertyToken
 export const ADD_SIMPLE_EVENT_API: string = BASE_URL + '/simple-event-data/add';
 export const ADD_DATA_EVENT_API: string = BASE_URL + '/data-event-data/add';
 export const ADD_PAGE_VIEW_EVENT_API: string = BASE_URL + '/page-view-data/add';
-export const EMAIL_TRANSFER_API: string = BASE_URL + '/email-notifier/gmail/send';
+export const GMAIL_EMAIL_TRANSFER_API: string = BASE_URL + '/email-notifier/gmail/send';
+export const SMTP_EMAIL_TRANSFER_API: string = BASE_URL + '/email-notifier/smtp/send';
 
 
 export const HTTP_HEADERS: Headers = new Headers({
