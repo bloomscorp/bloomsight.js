@@ -1,5 +1,12 @@
 
 
+# [0.6.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.5.0...v0.6.0) (2025-07-23)
+
+
+### Features
+
+* add support for custom SMTP server ([d26f01c](https://github.com/bloomscorp/bloomsight.js/commit/d26f01ce26dd7f532cd444203ef2c1990928a728))
+
 # [0.5.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.4.1...v0.5.0) (2025-02-16)
 
 
