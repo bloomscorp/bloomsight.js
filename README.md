@@ -186,6 +186,7 @@ formData.append('name', 'John');
 formData.append('email', 'john.doe@gmail.com');
 
 sendEmail(
+	'GMAIL',
 	'66d735b122355c8ba6a456f8',
 	'63d735h822355s6ba6a4556k',
 	'61d895h922355b6ba6a4587a',
@@ -197,6 +198,7 @@ sendEmail(
 
 | Option            | Type         | Description                                                                                | Mandatory | Default |
 |:------------------|:-------------|:-------------------------------------------------------------------------------------------|:----------|:--------|
+| `engineType`      | `string`     | Type of the email engine - GMAIL or CUSTOM_SMTP                                            | ✅         | NA      |
 | `engineId`        | `string`     | Id of the engine that will be used to send email                                           | ✅         | NA      |
 | `templateId`      | `string`     | Id of the email template that will be used as email body                                   | ✅         | NA      |
 | `templateOwnerId` | `string`     | Id of the user who has created the template                                                | ✅         | NA      |
