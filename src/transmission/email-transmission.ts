@@ -1,10 +1,12 @@
 import {ITransmissionResponse} from "./interface/transmission-response";
 import {executePostPayload} from "./transmission";
-import {EMAIL_TRANSFER_API} from "../support/request-mapper";
+import {GMAIL_EMAIL_TRANSFER_API, SMTP_EMAIL_TRANSFER_API} from "../support/request-mapper";
 import {config} from "../configuration/configuration";
+import {EmailEngineTypeEnum} from "../email/enums/emailEngineTypeEnum";
 
 export function transferEmail(
 	payload: any,
+	emailService: EmailEngineTypeEnum,
 	onPreExecute: () => void,
 	onPostExecute: (response: ITransmissionResponse) => void,
 	onSuccess: (response: ITransmissionResponse) => void,
@@ -15,7 +17,7 @@ export function transferEmail(
 	if (config?.logOnly) return;
 
 	executePostPayload<FormData>(
-		EMAIL_TRANSFER_API,
+		emailService === EmailEngineTypeEnum.GMAIL ? GMAIL_EMAIL_TRANSFER_API : SMTP_EMAIL_TRANSFER_API,
 		payload,
 		undefined,
 		onPreExecute,
