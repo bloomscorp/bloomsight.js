@@ -1,5 +1,5 @@
-const BASE_URL: string = 'https://api.bloomsight.io/api/v1';
-export const LOCATION_API: string = 'https://api.bloomsight.io/service/get-my-ip';
+const BASE_URL: string = 'https://footprint-api.bloomscorp.com/api/v1';
+export const LOCATION_API: string = 'https://footprint-api.bloomscorp.com/service/get-my-ip';
 export const GET_PROPERTY_API: string = BASE_URL + '/property/get/{propertyToken}';
 export const ADD_SIMPLE_EVENT_API: string = BASE_URL + '/simple-event-data/add';
 export const ADD_DATA_EVENT_API: string = BASE_URL + '/data-event-data/add';
