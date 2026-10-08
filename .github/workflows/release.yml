@@ -68,18 +68,30 @@ jobs:
             exit 1
           fi
 
+      # `npm pack` runs the `prepare` lifecycle, and husky writes to stdout — a
+      # plain `> pack.json` captures that and corrupts the JSON. --ignore-scripts
+      # stops it (build and bundle have already run above), and slicing from the
+      # first `[` tolerates anything else npm chooses to print.
       - name: Verify the tarball contains both dist/ and umd/
         run: |
-          npm pack --dry-run --json > pack.json
-          node -e "
-            const files = require('./pack.json')[0].files.map(f => f.path);
+          OUT="${RUNNER_TEMP:-/tmp}/pack.json"
+          npm pack --dry-run --json --ignore-scripts > "$OUT"
+          OUT="$OUT" node -e "
+            const fs = require('fs');
+            const raw = fs.readFileSync(process.env.OUT, 'utf8');
+            const start = raw.indexOf('[');
+            if (start === -1) {
+              console.error('npm pack produced no JSON:', raw.slice(0, 200));
+              process.exit(1);
+            }
+            const files = JSON.parse(raw.slice(start))[0].files.map(f => f.path);
             const need = ['dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'umd/production.js', 'umd/dom.js'];
             const missing = need.filter(f => !files.includes(f));
             if (missing.length) {
               console.error('missing from the published tarball:', missing);
               process.exit(1);
             }
-            console.log('tarball contains all ' + need.length + ' required artefacts');
+            console.log('tarball contains all ' + need.length + ' required artefacts (' + files.length + ' files)');
           "
 
       - name: Publish to npm
