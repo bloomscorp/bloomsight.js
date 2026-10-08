@@ -4,6 +4,11 @@ import {IDevice} from "./constant/device";
 import {isDevelopmentMode} from "../configuration/configuration";
 import {resolveDocument, resolveUserAgent, resolveWindow} from "../utils/browser-api";
 
+// Captured once, at module load. The exported detectors take an optional user
+// agent so they can be tested against real strings rather than whatever browser
+// happens to be running them — the same shape as `isBot(agent?)` in
+// src/utils/bot-handler.ts. Passing nothing uses the live one, so no call site
+// changes.
 const _userAgent: string = resolveUserAgent();
 const window: Window = resolveWindow();
 const document: Document = resolveDocument();
@@ -23,7 +28,9 @@ export function initPlatform(): void {
 	console.log(`device: ${device}`);
 }
 
-export function resolveBrowser(): IBrowser | string {
+export function resolveBrowser(agent: string = _userAgent): IBrowser | string {
+
+	const _userAgent: string = agent;
 
 	let nameOffset: number = 0;
 	let verOffset: number = 0;
@@ -54,12 +61,15 @@ export function resolveBrowser(): IBrowser | string {
 	}
 }
 
-export function resolveBrowserVersion(): string {
-	const match: RegExpMatchArray | null = _userAgent.match(/(Chrome|Firefox|Safari|Edge|IE|Opera|Trident)[\/\s](\d+(\.\d+)*)/);
+export function resolveBrowserVersion(agent: string = _userAgent): string {
+	const match: RegExpMatchArray | null = agent.match(/(Chrome|Firefox|Safari|Edge|IE|Opera|Trident)[\/\s](\d+(\.\d+)*)/);
 	return match && match[2] ? match[2] : 'Unknown';
 }
 
-export function resolveOS(): IOperatingSystem {
+export function resolveOS(agent: string = _userAgent): IOperatingSystem {
+
+	const _userAgent: string = agent;
+
 	switch (true) {
 		case /Android/i.test(_userAgent):
 			return IOperatingSystem.Android;
