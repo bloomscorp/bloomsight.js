@@ -4,6 +4,9 @@
 # so it has to be inside the published tarball.
 /node_modules
 /.husky
+# CI config and the internal release runbook were shipping to consumers.
+/.github
+RELEASING.md
 /.idea
 /docs
 /demo

@@ -38,13 +38,27 @@ It needs a clean working tree — commit or stash anything in progress first.
 
 ### Requirements
 
-- You are on `main` and up to date.
-- The repository secret **`NPM_TOKEN`** exists: an npm granular token with read
-  and write on `@bloomscorp/bloomsight.js`. Automation tokens bypass npm 2FA,
-  which is what lets CI publish at all.
-- Nothing else. `GITHUB_TOKEN` is provided to Actions automatically — which is
-  why the GitHub release lives in CI rather than locally, where it always failed
-  for want of a token.
+- You are on `main` and up to date, with a clean working tree.
+- Nothing else. **There is no publish secret to manage.**
+
+Publishing uses an npm **trusted publisher** (OIDC), configured on the package
+to accept this repository and the `release.yml` workflow. npm mints a
+short-lived token per run from the workflow's `id-token: write` permission, so
+there is no credential to store, rotate, or have silently expire. The GitHub
+release uses `GITHUB_TOKEN`, which Actions provides automatically.
+
+That is also why releasing lives in CI and not on your laptop: locally there is
+no OIDC identity and no `GITHUB_TOKEN`, which is exactly what made every
+previous release a manual job.
+
+Trusted publishing requires **npm ≥ 11.5.1**, and Node 20 bundles npm 10.x, so
+the workflow upgrades npm before publishing. Don't remove that step.
+
+> A granular access token with **bypass 2FA** enabled would also work. The
+> package is set to require either that or 2FA, so a token *without* the bypass
+> flag fails with `EOTP` — which is what happened on the first attempt at 0.8.0,
+> and why previous versions had to be published by hand with an authenticator
+> code.
 
 ### Afterwards
 
@@ -98,6 +112,23 @@ git tag vX.Y.Z && git push origin vX.Y.Z
 **It published but the version is wrong.** npm versions are immutable and
 `unpublish` is heavily restricted — release the next patch instead. Never try to
 replace a published version.
+
+**`npm error code EOTP`.** npm wanted an authenticator code, so it did not
+recognise the publish as a trusted one. Either the trusted publisher is not
+configured for this exact repository and workflow filename, or the npm upgrade
+step was removed and npm 10.x is doing the publishing.
+
+**The tag is pushed but nothing published.** Nothing is public until the publish
+step succeeds, so the version is still free. Fix the cause, then either re-run
+the job from the Actions tab, or move the tag onto a new commit:
+
+```bash
+git push origin :refs/tags/vX.Y.Z    # delete the remote tag
+git tag -d vX.Y.Z
+# commit the fix, then:
+git tag -a vX.Y.Z -m "Release X.Y.Z"
+git push origin main && git push origin vX.Y.Z
+```
 
 **jsDelivr serves a stale file.** It caches aggressively but keys on the exact
 version in the URL, so a new version is never stale. Only an unversioned or

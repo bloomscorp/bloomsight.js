@@ -17,7 +17,7 @@ on:
 
 permissions:
   contents: write      # create the GitHub release
-  id-token: write      # npm provenance
+  id-token: write      # mints the OIDC token npm trusts, and signs provenance
 
 jobs:
   release:
@@ -34,7 +34,15 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          # Required so npm knows which registry the OIDC token is for. No
+          # NODE_AUTH_TOKEN is set anywhere — see the publish step.
           registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm >= 11.5.1 and Node 20 bundles npm 10.x.
+      - name: Upgrade npm for OIDC publishing
+        run: |
+          npm install -g npm@^11.5.1
+          npm -v
 
       - uses: browser-actions/setup-chrome@v1
         with:
@@ -94,10 +102,15 @@ jobs:
             console.log('tarball contains all ' + need.length + ' required artefacts (' + files.length + ' files)');
           "
 
+      # Published via an npm **trusted publisher** (OIDC), configured on the
+      # package to accept this repository and this workflow file. npm mints a
+      # short-lived token from the `id-token` permission above, so there is no
+      # NPM_TOKEN secret to store, rotate or have silently expire.
+      #
+      # A granular token with "bypass 2FA" would also work, but the package
+      # requires either that or 2FA, and a plain token gets EOTP.
       - name: Publish to npm
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create the GitHub release
         env:
