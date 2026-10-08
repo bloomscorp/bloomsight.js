@@ -1,5 +1,18 @@
 
 
+# [0.8.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.7.0...v0.8.0) (2026-10-08)
+
+
+### Bug Fixes
+
+* **ci:** stop husky's stdout from corrupting the packaging check ([769bf60](https://github.com/bloomscorp/bloomsight.js/commit/769bf60121da426cf9396ede68b7e875a57ea2e9))
+* make platform detection testable instead of machine-dependent ([bba1918](https://github.com/bloomscorp/bloomsight.js/commit/bba19181dbff5618b1bd609d6180eb7ccf5c6551))
+
+
+### Features
+
+* add blooms.ai (B2) target alongside the standalone backend ([0f095c4](https://github.com/bloomscorp/bloomsight.js/commit/0f095c47e3ff954e8b2c4355ab9a4253727cf65f))
+
 # [0.6.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.5.0...v0.6.0) (2025-07-23)
 
 
