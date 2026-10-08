@@ -3,9 +3,9 @@
 		"before:init": [
 			"git pull",
 			"npm run lint",
+			"npm run test",
 			"npm run build",
-			"npm run bundle",
-			"git add --all"
+			"npm run bundle"
 		]
 	},
 	"git": {
@@ -13,10 +13,11 @@
 		"tagName": "v${version}",
 		"requireBranch": "main",
 		"requireUpstream": false,
-		"requireCleanWorkingDir": false
+		"requireCleanWorkingDir": true,
+		"push": true
 	},
 	"github": {
-		"release": true,
+		"release": false,
 		"host": "github.com"
 	},
 	"npm": {

@@ -1,0 +1,62 @@
+name: CI
+
+# Nothing ran the tests before this file existed. They now run on every push and
+# pull request, so a problem is visible before anyone cuts a tag.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      # The `prepare` script installs husky git hooks, which are pointless in CI
+      # and fail in some checkout layouts.
+      HUSKY: 0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # The test suite runs in a real browser (vitest browser mode via
+      # webdriverio), so Chrome has to be present and matched to a driver.
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build (npm artefacts)
+        run: npm run build
+
+      - name: Bundle (CDN artefacts)
+        run: npm run bundle
+
+      # Catches a packaging mistake — a missing umd/ or dist/ — before a release
+      # rather than after it is public and immutable.
+      - name: Verify the tarball contains both dist/ and umd/
+        run: |
+          npm pack --dry-run --json > pack.json
+          node -e "
+            const files = require('./pack.json')[0].files.map(f => f.path);
+            const need = ['dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'umd/production.js', 'umd/dom.js'];
+            const missing = need.filter(f => !files.includes(f));
+            if (missing.length) {
+              console.error('missing from the published tarball:', missing);
+              process.exit(1);
+            }
+            console.log('tarball contains all ' + need.length + ' required artefacts');
+          "

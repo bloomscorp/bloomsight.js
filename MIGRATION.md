@@ -16,9 +16,23 @@ behaves.
 ## Step 1 — bump the library, change nothing else
 
 ```html
-<!-- the version in the tag is the only edit -->
-<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@v0.8.0/umd/production.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@v0.8.0/umd/dom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@bloomscorp/bloomsight.js@0.8.0/umd/production.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@bloomscorp/bloomsight.js@0.8.0/umd/dom.js"></script>
+```
+
+> ⚠️ **The CDN URL form changed in 0.8.0.** It used to be
+> `cdn.jsdelivr.net/gh/bloomscorp/bloomsight.js@v0.7.0/...`, served from the git
+> tag. From 0.8.0 the bundle is published to npm and jsDelivr serves it from
+> there — `/npm/@bloomscorp/bloomsight.js@0.8.0/...`, no `v` on the version.
+>
+> Old `gh/` URLs keep working for the versions that already have them, so no
+> site breaks. But **`gh/...@v0.8.0` does not exist** — `umd/` is no longer
+> committed to git. Since every site is re-embedding anyway, use the npm form.
+
+For an Angular project there is no script tag; bump the dependency instead:
+
+```
+npm install @bloomscorp/bloomsight.js@^0.8.0
 ```
 
 ```js
@@ -29,9 +43,11 @@ init({
 // → still B1, exactly as before
 ```
 
-For Angular, bump `@bloomscorp/ngx-bloomsight`. **The wrapper needs no source
-change** — it forwards the whole config object into `init()`, so new fields flow
-through on their own.
+**`@bloomscorp/ngx-bloomsight` needs no release at all.** It declares
+`@bloomscorp/bloomsight.js` as a *peer* dependency with the range
+`>=0.7.0 <1.0.0`, which `0.8.0` already satisfies — so the Angular app bumps the
+SDK itself and the wrapper is untouched. It also forwards the whole config
+object into `init()`, so `target` flows through on its own.
 
 ## Step 2 — flip the project, when it is ready
 

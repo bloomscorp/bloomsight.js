@@ -1,10 +1,12 @@
 /src
+# /umd is deliberately NOT ignored: jsDelivr serves the CDN bundle from npm
+# (cdn.jsdelivr.net/npm/@bloomscorp/bloomsight.js@<version>/umd/production.js),
+# so it has to be inside the published tarball.
 /node_modules
 /.husky
 /.idea
 /docs
 /demo
-/umd
 /coverage
 /test
 

@@ -334,3 +334,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,node,visualstudiocode,macos,windows
+
+# Build output. `dist/` is above; `umd/` is the CDN bundle, which from v0.8.0 is
+# published to npm and served by jsDelivr from there rather than from a git tag,
+# so it no longer belongs in version control.
+umd/

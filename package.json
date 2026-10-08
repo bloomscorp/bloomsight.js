@@ -10,9 +10,11 @@
 		"prepare": "husky",
 		"lint": "tsc",
 		"build": "tsup",
-		"test": "vitest",
+		"test": "vitest run",
 		"bundle": "webpack --mode production",
-		"release": "release-it"
+		"release": "release-it",
+		"test:watch": "vitest",
+		"pack:check": "npm pack --dry-run"
 	},
 	"keywords": [
 		"bloomsight.io",
