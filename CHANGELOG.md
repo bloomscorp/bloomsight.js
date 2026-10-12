@@ -1,5 +1,12 @@
 
 
+# [0.9.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.8.0...v0.9.0) (2026-10-12)
+
+
+### Bug Fixes
+
+* ship EmailEngineTypeEnum at runtime and accept plain strings (P6) ([55ece65](https://github.com/bloomscorp/bloomsight.js/commit/55ece6561db0bf8d98c2b99bbd2ece0fa3be88fe))
+
 # [0.8.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.7.0...v0.8.0) (2026-10-08)
 
 
