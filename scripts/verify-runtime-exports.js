@@ -18,6 +18,15 @@
  * A unit test cannot catch this: in `src/` the enum is perfectly real. The bug
  * exists only in the built artifact, so the check has to read the artifact.
  *
+ * It then caught something larger on its first CI run. `webpack.config.ts` gave
+ * `ts-loader` `compilerOptions: { noEmit: false }` so it would emit JS for
+ * webpack — but `tsconfig.json` also sets `declaration: true` and
+ * `outDir: "dist"`, so every `npm run bundle` wrote a `.d.ts` for **every**
+ * source file into `dist/`. Webpack's own output goes to `umd/`, so it was
+ * invisible, and with no `files` field in `package.json` all 49 were published.
+ * Every release up to 0.9.0 shipped them. Fixed by adding `declaration: false`
+ * to that loader's options; the tarball went from 60 files to 12.
+ *
  * Deliberately generic. It does not look for that enum; it compares the
  * declaration's value exports against each bundle's export table, so any future
  * export tree-shaken out from under its own type is caught too.
@@ -51,13 +60,30 @@ function read(file) {
 	return fs.readFileSync(file, 'utf8');
 }
 
+/**
+ * Comments must go before anything is parsed.
+ *
+ * A doc comment sitting *inside* an `export { ... }` specifier list is carried
+ * straight into the generated `.d.ts`, and this script originally read those
+ * comment lines as export names — reporting imaginary missing exports like
+ * "a **value**" and failing a release for the wrong reason. The comment was
+ * moved out of the braces, but the parser should not have been fragile enough
+ * to care.
+ */
+function stripComments(code) {
+	return code
+		.replace(/\/\*[\s\S]*?\*\//g, ' ')
+		.replace(/(^|[^:])\/\/[^\n]*/g, '$1');
+}
+
 function lastName(entry) {
 	const parts = entry.split(/\s+as\s+/);
 	return (parts[parts.length - 1] || entry).trim();
 }
 
 /** The value (non-`type`) names in the declaration's export statements. */
-function declaredValueExports(dts) {
+function declaredValueExports(rawDts) {
+	const dts = stripComments(rawDts);
 	const statements = [...dts.matchAll(/export\s*\{([^}]*)\}/g)];
 	if (!statements.length) {
 		console.error('verify-runtime-exports: no export statement found in dist/index.d.ts');
@@ -69,7 +95,20 @@ function declaredValueExports(dts) {
 			const entry = raw.trim();
 			// `type X` entries are type-only; no runtime presence is expected.
 			if (!entry || entry.startsWith('type ')) continue;
-			names.add(lastName(entry));
+			const name = lastName(entry);
+			// Guard against a parse that has gone off the rails: only real
+			// identifiers are exportable, so anything else means this script is
+			// misreading the file and must say so rather than invent findings.
+			if (!/^[A-Za-z_$][\w$]*$/.test(name)) {
+				console.error(
+					`verify-runtime-exports: could not parse the export list in `
+					+ `${path.relative(ROOT, DTS)} — got ${JSON.stringify(name)}, `
+					+ 'which is not an identifier. This is a bug in this script, not '
+					+ 'a packaging problem; fix the parser rather than the package.'
+				);
+				process.exit(1);
+			}
+			names.add(name);
 		}
 	}
 	return [...names];
@@ -80,7 +119,8 @@ function declaredValueExports(dts) {
  *   ESM — `export{a as init,b as sendEmail}`
  *   CJS — tsup's export table, `Name: () => local`, plus minified `Name=local`
  */
-function bundleExports(code) {
+function bundleExports(rawCode) {
+	const code = stripComments(rawCode);
 	const names = new Set();
 	for (const [, body] of code.matchAll(/export\s*\{([^}]*)\}/g)) {
 		for (const raw of body.split(',')) {
@@ -96,7 +136,7 @@ function bundleExports(code) {
 /**
  * Check 1 — orphan declarations.
  *
- * **This is the check that would have caught the 0.8.0 bug.** tsup emitted
+ * **This is the check that caught the bundle-step leak.** tsup emitted
  * `email/enums/emailEngineTypeEnum.d.ts` with no `emailEngineTypeEnum.js`
  * beside it, so the package shipped a declaration for a module that did not
  * exist. Any `.d.ts` without a sibling `.js` is a promise the package cannot

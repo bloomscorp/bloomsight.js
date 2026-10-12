@@ -1,33 +1,45 @@
 # Releasing `@bloomscorp/bloomsight.js`
 
 
-## A hazard that already bit us: stale `dist/`
+## A hazard that already bit us: the bundle step wrote declarations
 
 `package.json` has **no `files` field**, so `npm publish` ships everything not
-ignored — including whatever happens to be sitting in `dist/`. `dist/` is
-gitignored, so a CI release builds it from nothing and the contents are exactly
-what `tsup` just produced. A release packed on a developer machine is different:
-`dist/` there accumulates output from every build the repo has ever had.
+ignored — including whatever is sitting in `dist/`.
 
-That is not hypothetical. **Published 0.8.0 contains 49 `.d.ts` files with no
-`.js` beside them** — the whole per-file declaration tree from a pre-`tsup`
-build, which a current build does not emit at all. Verified by rebuilding 0.8.0's
-source from a clean tree: it produces two declaration files, not fifty-one.
+Through 0.8.0, that meant **49 `.d.ts` files with no `.js` beside them**. Every
+path under `dist/` resolved as a type with no implementation behind it, and the
+compiler said nothing.
 
-The consequence for consumers was invisible and nasty: every one of those paths
-resolved as a type with no implementation behind it. `ngx-bloomsight` was
-deep-importing one of them (`dist/configuration/interface/config`) and only got
-away with it because it needed the type alone.
+The cause was not stale files, which was the first and wrong guess here.
+`webpack.config.ts` gave `ts-loader` `compilerOptions: { noEmit: false }`, which
+it needs in order to emit JS at all, because `tsconfig.json` sets
+`noEmit: true` for typechecking. But that tsconfig *also* sets
+`declaration: true` and `outDir: "dist"` — so flipping `noEmit` made TypeScript
+write a declaration for every source file into `dist/` as a side effect of
+bundling. Webpack's own output goes to `umd/`, so nothing looked wrong.
 
-Two things now guard this:
+Reproduced precisely:
+
+```
+rm -rf dist umd
+npm run build    # tsup   ->  2 declaration files   (correct)
+npm run bundle   # webpack -> 51 declaration files  (49 orphans)
+```
+
+Fixed by adding `declaration: false` to that loader's options — declarations are
+tsup's job. The tarball went from **60 files to 12**.
+
+`ngx-bloomsight` was deep-importing one of those orphans
+(`dist/configuration/interface/config`) and only got away with it because it
+needed the type alone. Those paths no longer exist, so that import would now
+fail outright.
+
+Two things guard this:
 
 - `npm run verify:exports` fails on any declaration without matching runtime
-  code, and runs in both `ci.yml` and `release.yml` **before** publish
-- 0.8.0 was the last release cut by hand; publishing runs through CI on a fresh
-  checkout from `0c0e549` onward
-
-**When releasing, do not publish from a local `dist/`.** Let CI do it.
-
+  code, and on any value the root declaration promises but the bundles lack. It
+  runs in `before:init` **and** in both workflows, before publish
+- publishing runs through CI on a fresh checkout
 
 ## How it reaches users
 
