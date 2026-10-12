@@ -15,6 +15,7 @@ import {initB2} from "./b2";
 import {isBloomsAiTarget} from "./b2/config";
 import {resolveSimpleEventB2, resolveDataEventB2} from "./b2/event";
 import {debugLog} from "./b2/error";
+import {EmailEngineTypeEnum} from "./email/enums/emailEngineTypeEnum";
 
 /**
  * Two backends live in this library side by side:
@@ -107,8 +108,30 @@ export {
 	resolveSimpleEvent,
 	resolveDataEvent,
 	pageViewObserver,
-	sendEmail
+	sendEmail,
+
+	/**
+	 * Exported as a **value**, which is the whole point.
+	 *
+	 * This enum previously existed only as a type: it was referenced in
+	 * `sendEmail`'s signature and nowhere as a value reachable from this entry
+	 * point, so `tsup`'s `treeshake: 'smallest'` dropped its runtime code while
+	 * `dts: true` still emitted `email/enums/emailEngineTypeEnum.d.ts`. The
+	 * result was a declaration promising a value the package did not ship —
+	 * nothing could import it, from the root (not exported) or by path (no
+	 * `.js`).
+	 *
+	 * The library's own routing was never affected, because the minifier
+	 * inlined the member comparison to a string literal inside the bundle. The
+	 * breakage was entirely on the consumer side.
+	 *
+	 * Exporting it here makes it reachable at runtime. Prefer passing a plain
+	 * `'GMAIL'` / `'CUSTOM_SMTP'` string — `EmailEngineType` accepts both — but
+	 * the enum is available for anyone who wants it.
+	 */
+	EmailEngineTypeEnum
 };
 
 export type {IConfig} from "./configuration/interface/config";
 export type {IBloomsightError} from "./b2/error";
+export type {EmailEngineType} from "./email/enums/emailEngineTypeEnum";

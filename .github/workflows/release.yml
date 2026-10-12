@@ -64,6 +64,15 @@ jobs:
       - name: Bundle (CDN artefacts)
         run: npm run bundle
 
+      # The declaration files must not promise values the bundles do not ship.
+      # 0.8.0 went out with 49 .d.ts files that had no .js beside them — stale
+      # artifacts from a pre-tsup build, packed from a local dist/ before
+      # publishing moved into CI. A consumer deep-importing any of them got
+      # types with no implementation, and the compiler said nothing. The enum
+      # P6 describes was one of those 49.
+      - name: Verify declarations match the shipped runtime
+        run: npm run verify:exports
+
       # The tag and package.json must agree, or npm and the CDN end up serving a
       # version the git history does not describe.
       - name: Check the tag matches package.json

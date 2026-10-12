@@ -1,5 +1,34 @@
 # Releasing `@bloomscorp/bloomsight.js`
 
+
+## A hazard that already bit us: stale `dist/`
+
+`package.json` has **no `files` field**, so `npm publish` ships everything not
+ignored — including whatever happens to be sitting in `dist/`. `dist/` is
+gitignored, so a CI release builds it from nothing and the contents are exactly
+what `tsup` just produced. A release packed on a developer machine is different:
+`dist/` there accumulates output from every build the repo has ever had.
+
+That is not hypothetical. **Published 0.8.0 contains 49 `.d.ts` files with no
+`.js` beside them** — the whole per-file declaration tree from a pre-`tsup`
+build, which a current build does not emit at all. Verified by rebuilding 0.8.0's
+source from a clean tree: it produces two declaration files, not fifty-one.
+
+The consequence for consumers was invisible and nasty: every one of those paths
+resolved as a type with no implementation behind it. `ngx-bloomsight` was
+deep-importing one of them (`dist/configuration/interface/config`) and only got
+away with it because it needed the type alone.
+
+Two things now guard this:
+
+- `npm run verify:exports` fails on any declaration without matching runtime
+  code, and runs in both `ci.yml` and `release.yml` **before** publish
+- 0.8.0 was the last release cut by hand; publishing runs through CI on a fresh
+  checkout from `0c0e549` onward
+
+**When releasing, do not publish from a local `dist/`.** Let CI do it.
+
+
 ## How it reaches users
 
 Two channels, both fed by **one `npm publish`**:

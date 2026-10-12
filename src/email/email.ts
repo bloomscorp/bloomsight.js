@@ -4,10 +4,10 @@ import {isDevelopmentMode} from "../configuration/configuration";
 import {transferEmail} from "../transmission/email-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveSegmentUrl} from "../utils/browser-api";
-import {EmailEngineTypeEnum} from "./enums/emailEngineTypeEnum";
+import {EmailEngineType} from "./enums/emailEngineTypeEnum";
 
 export function sendEmail(
-	engineType: EmailEngineTypeEnum,
+	engineType: EmailEngineType,
 	engineId: string,
 	templateId: string,
 	templateOwnerId: string,
