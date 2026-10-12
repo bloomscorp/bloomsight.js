@@ -5,6 +5,7 @@
 			"npm run lint",
 			"npm run test",
 			"npm run build",
+			"npm run verify:exports",
 			"npm run bundle"
 		]
 	},
