@@ -1,5 +1,12 @@
 
 
+## [0.9.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.9.0...v0.9.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* stop the bundle step writing declarations into dist/ ([ab27f86](https://github.com/bloomscorp/bloomsight.js/commit/ab27f8679a8b7803618d05ca3a034f3181aaffe7))
+
 # [0.9.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.8.0...v0.9.0) (2026-10-12)
 
 
