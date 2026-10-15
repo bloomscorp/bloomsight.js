@@ -54,6 +54,14 @@ jobs:
       - name: Verify declarations match the shipped runtime
         run: npm run verify:exports
 
+      # Install the packed tarball into a clean project and load it by package
+      # name, in CommonJS and ESM. 0.9.1 passed every other gate here and was
+      # still unloadable from Node, because nothing ever executed the published
+      # artifact; a dependency (bmx-pastebox <= 1.0.17) shipped malformed ESM
+      # and this package does not bundle its dependencies.
+      - name: Verify a Node consumer can install and load the package
+        run: npm run verify:package
+
       # Catches a packaging mistake — a missing umd/ or dist/ — before a release
       # rather than after it is public and immutable.
       # `npm pack` runs the `prepare` lifecycle, and husky writes to stdout — a

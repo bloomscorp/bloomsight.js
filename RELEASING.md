@@ -39,6 +39,12 @@ Two things guard this:
 - `npm run verify:exports` fails on any declaration without matching runtime
   code, and on any value the root declaration promises but the bundles lack. It
   runs in `before:init` **and** in both workflows, before publish
+- `npm run verify:package` packs the tarball, installs it into a clean project
+  with its real dependencies, and loads it **by package name** with both
+  `require` and `import`. Added after 0.9.1 passed every other gate and was
+  still unloadable from Node: a dependency (`bmx-pastebox` <= 1.0.17) shipped
+  malformed ESM, this package does not bundle its dependencies, and nothing
+  here ever executed the published artifact. Needs network access
 - publishing runs through CI on a fresh checkout
 
 ## How it reaches users

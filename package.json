@@ -15,7 +15,8 @@
     "release": "release-it",
     "test:watch": "vitest",
     "pack:check": "npm pack --dry-run",
-    "verify:exports": "node scripts/verify-runtime-exports.js"
+    "verify:exports": "node scripts/verify-runtime-exports.js",
+    "verify:package": "node scripts/verify-package.js"
   },
   "keywords": [
     "bloomsight.io",
@@ -62,6 +63,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "bmx-pastebox": "^1.0.14"
+    "bmx-pastebox": "^1.1.0"
   }
 }
