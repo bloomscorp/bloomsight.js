@@ -1,5 +1,13 @@
 
 
+## [0.9.2](https://github.com/bloomscorp/bloomsight.js/compare/v0.9.1...v0.9.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* depend on bmx-pastebox 1.1.0, and gate on a Node consumer loading the package ([b09eb28](https://github.com/bloomscorp/bloomsight.js/commit/b09eb28cf6222377a64664f3af4beee86fd23859))
+* run the export gate after bundle, not before ([1a9ec3e](https://github.com/bloomscorp/bloomsight.js/commit/1a9ec3ea3935c8901303d8692dc46ba8719513b7))
+
 ## [0.9.1](https://github.com/bloomscorp/bloomsight.js/compare/v0.9.0...v0.9.1) (2026-10-12)
 
 
