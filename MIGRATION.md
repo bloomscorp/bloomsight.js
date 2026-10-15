@@ -43,11 +43,28 @@ init({
 // → still B1, exactly as before
 ```
 
-**`@bloomscorp/ngx-bloomsight` needs no release at all.** It declares
+**`@bloomscorp/ngx-bloomsight` 1.6.0 needs no release.** It declares
 `@bloomscorp/bloomsight.js` as a *peer* dependency with the range
 `>=0.7.0 <1.0.0`, which `0.8.0` already satisfies — so the Angular app bumps the
 SDK itself and the wrapper is untouched. It also forwards the whole config
 object into `init()`, so `target` flows through on its own.
+
+**With `@bloomscorp/ngx-bloomsight` 2.0.0** (published 2026-10-15) the Angular
+app never calls `init()` or imports this package; the same fields go to
+`provideBloomsight()`:
+
+```ts
+provideBloomsight({
+  propertyToken: '65d72f0b5e990c6028790156',
+  isDevelopmentMode: false,
+  target: 'blooms-ai',                          // ← the migration
+})
+```
+
+2.0.0 needs Angular 19–22 and this package at `>=0.9.2`. Upgrading an app from
+1.x is a code change of its own — see ngx-bloomsight's
+[MIGRATION.md](https://github.com/bloomscorp/ngx-bloomsight/blob/main/MIGRATION.md) —
+so do it first, on the current `target`, and flip `target` as a separate step.
 
 ## Step 2 — flip the project, when it is ready
 
@@ -77,8 +94,9 @@ That is the whole change. The property token stays the same, and
 whatever `target` says. Email is migrated separately, later.
 
 **Page views are not collected.** blooms.ai has no page-view endpoint, so
-`pageViewObserver()` is a no-op under B2 rather than an error — the Angular
-wrapper's automatic `NavigationEnd` wiring keeps working untouched.
+`pageViewObserver()` is a no-op under B2 rather than an error — ngx-bloomsight
+1.6.0's automatic `NavigationEnd` wiring keeps working untouched, and 2.0.0 does
+not watch the router at all under `target: 'blooms-ai'`.
 
 **Events carry more.** B2 sends `occurredAt` (when the event happened, not when
 it arrived) and a real `sessionId`, instead of B1's `newSession` boolean.
