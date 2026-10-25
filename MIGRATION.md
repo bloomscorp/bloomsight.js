@@ -90,8 +90,9 @@ That is the whole change. The property token stays the same, and
 
 ## What changes when a project is on B2
 
-**Email does not move.** `sendEmail` always goes to the standalone server,
-whatever `target` says. Email is migrated separately, later.
+**Email does not move with `target`.** `sendEmail` goes to the standalone
+server whatever `target` says. Email has its own switch, `configureEmail()`
+(below), so the two move independently.
 
 **Page views are not collected.** blooms.ai has no page-view endpoint, so
 `pageViewObserver()` is a no-op under B2 rather than an error — ngx-bloomsight
@@ -138,6 +139,38 @@ only makes mistakes harder to diagnose.
 | `PROPERTY_PAUSED` | Advisory. The website is paused, so nothing is stored |
 | `NETWORK_FAILURE` / `BAD_RESPONSE` | Could not reach blooms.ai, or it did not return JSON |
 
+## Moving email
+
+Email moves separately from events, with its own switch. It needs no `init()`,
+because many sites use the library for email alone and never call it.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@bloomscorp/bloomsight.js@0.10.0/umd/production.js"></script>
+<script>configureEmail({ target: 'blooms-ai' });</script>
+```
+
+or, in a bundled app: `import {configureEmail} from '@bloomscorp/bloomsight.js'`.
+A site that calls `init()` can pass `emailTarget` / `emailApiBase` there
+instead. If both are given, `configureEmail()` wins.
+
+| `configureEmail` field | Default | Notes |
+|---|---|---|
+| `target` | `'bloomsight'` | `'blooms-ai'` moves **email only** |
+| `apiBase` | `https://z.bloomscorp.com` | blooms.ai only. Not shared with the events `apiBase` |
+| `onError(err)` | `init`'s `onError`, if any | Every blooms.ai email failure, with the server's own code |
+| `debug` | `false` | Full logging of email sends |
+
+**`sendEmail` does not change.** Same signature and the same multipart fields,
+so no form is edited. On blooms.ai:
+
+- it posts to `{apiBase}/api/bloomsight/email/send`. The engine type argument is ignored, because Gmail and SMTP share one pipeline there
+- `onSuccess` fires on HTTP 2xx with `success: true`; anything else calls `onError` and the `onError` handler, and warns once per failure code
+- no `keepalive`, since its 64 KB cap would drop attachments
+- `logOnly` (from `init`) still sends nothing
+
+The default stays the standalone server, so bumping the library is not a
+migration for email either. To roll back, remove the `configureEmail` line.
+
 ## Rolling back
 
 Remove `target` and redeploy. Events written to blooms.ai in the meantime stay
@@ -156,8 +189,14 @@ The standalone server retires only when nothing deployed points at it.
 `target`, the library must behave exactly as B1 did.** It asserts both halves —
 default traffic goes to the B1 host with B1's field names, and
 `target: 'blooms-ai'` goes to the native blooms.ai endpoints with B2's — plus the
-payload differences, the `apiBase` override, the page-view no-op, and that email
-stays on B1 either way.
+payload differences, the `apiBase` override, the page-view no-op, and that
+`target` alone leaves email on B1.
+
+`test/email/email-target.spec.ts` does the same for email: with no setting it
+posts to B1 exactly as before. `configureEmail({ target: 'blooms-ai' })` moves
+it to blooms.ai without `init()`, and does not move events. `init`'s
+`emailTarget` works, and `configureEmail()` beats it. It also covers success
+and failure callbacks, `onError`, `apiBase` and `logOnly`.
 
 ```
 npx vitest run test/b2/target-routing.spec.ts

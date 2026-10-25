@@ -8,6 +8,7 @@ import {config, initConfig, isConfiguredProperly} from "./configuration/configur
 import {resolveSimpleEvent as resolveSimpleEventB1} from './event/simple-event';
 import {resolveDataEvent as resolveDataEventB1} from './event/data-event';
 import {sendEmail} from "./email/email";
+import {configureEmail} from "./email/email-config";
 import {validateProperty} from "./property/property";
 import {isBrowser, resolveHost} from "./utils/browser-api";
 
@@ -29,7 +30,8 @@ import {EmailEngineTypeEnum} from "./email/enums/emailEngineTypeEnum";
  * about how a project behaves; a project moves to blooms.ai only when someone
  * adds `target: 'blooms-ai'` to its `init()` call.
  *
- * Email is not part of B2 and always goes to the standalone server.
+ * Email has its own switch, `configureEmail()` / `emailTarget`, independent of
+ * `target` (src/email/email-config.ts).
  *
  * Each public function branches once, at call time rather than at load time,
  * because `initConfig()` has not run when this module is evaluated.
@@ -101,6 +103,7 @@ if (isBrowser()) {
 	(window as any).resolveDataEvent = resolveDataEvent;
 	(window as any).pageViewObserver = pageViewObserver;
 	(window as any).sendEmail = sendEmail;
+	(window as any).configureEmail = configureEmail;
 }
 
 /**
@@ -128,9 +131,11 @@ export {
 	resolveDataEvent,
 	pageViewObserver,
 	sendEmail,
+	configureEmail,
 	EmailEngineTypeEnum
 };
 
 export type {IConfig} from "./configuration/interface/config";
 export type {IBloomsightError} from "./b2/error";
 export type {EmailEngineType} from "./email/enums/emailEngineTypeEnum";
+export type {IEmailConfig, EmailTarget} from "./email/email-config";

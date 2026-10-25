@@ -37,7 +37,7 @@ const NAME = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')
 // The runtime surface. `verify:exports` already proves these match the
 // declarations; this proves they survive packing, installing and loading.
 const EXPECTED = [
-	'EmailEngineTypeEnum', 'init', 'pageViewObserver',
+	'EmailEngineTypeEnum', 'configureEmail', 'init', 'pageViewObserver',
 	'resolveDataEvent', 'resolveSimpleEvent', 'sendEmail'
 ];
 

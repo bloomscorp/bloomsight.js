@@ -5,6 +5,8 @@ import {transferEmail} from "../transmission/email-transmission";
 import {ITransmissionResponse} from "../transmission/interface/transmission-response";
 import {resolveSegmentUrl} from "../utils/browser-api";
 import {EmailEngineType} from "./enums/emailEngineTypeEnum";
+import {isEmailOnBloomsAi} from "./email-config";
+import {transferEmailB2} from "../b2/email";
 
 export function sendEmail(
 	engineType: EmailEngineType,
@@ -37,6 +39,12 @@ export function sendEmail(
 
 	if (isDevelopmentMode()) {
 		console.log('email data: ', payload);
+	}
+
+	// Chosen at call time: `configureEmail()` may run after this module loads.
+	if (isEmailOnBloomsAi()) {
+		transferEmailB2(payload, onSuccess, onError);
+		return;
 	}
 
 	transferEmail(

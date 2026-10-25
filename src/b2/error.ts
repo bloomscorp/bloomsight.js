@@ -28,18 +28,27 @@ export interface IBloomsightError {
 
 const warnedCodes: Set<string> = new Set<string>();
 
-export function reportError(error: IBloomsightError): void {
+/**
+ * `options` lets email pass its own handler and debug flag (`configureEmail`),
+ * since email can run without `init()`. Events pass nothing and keep using
+ * `init`'s `onError` and `debug`.
+ */
+export function reportError(
+	error: IBloomsightError,
+	options: {onError?: (error: IBloomsightError) => void; debug?: boolean} = {}
+): void {
 
-	if (typeof config?.onError === 'function') {
+	const handler = options.onError ?? config?.onError;
+	if (typeof handler === 'function') {
 		// A throwing handler must never break the host page.
 		try {
-			config.onError(error);
+			handler(error);
 		} catch {
 			/* ignored on purpose */
 		}
 	}
 
-	if (isDebugEnabled()) {
+	if (options.debug ?? isDebugEnabled()) {
 		console.error('bloomsight.js [blooms-ai]:', error);
 		return;
 	}

@@ -19,10 +19,20 @@ export interface IConfig {
 	 *   'bloomsight' (default) — the standalone Bloomsight server, unchanged
 	 *   'blooms-ai'            — Bloomsight inside blooms.ai
 	 *
-	 * This is the whole migration switch. Email is **not** affected: it always
-	 * goes to the standalone server, whatever this is set to.
+	 * This is the migration switch for events. Email is **not** affected: it
+	 * has its own switch, `emailTarget` below or `configureEmail()`.
 	 */
 	target?: 'bloomsight' | 'blooms-ai';
+
+	/**
+	 * Where `sendEmail` goes, independent of `target`. 'bloomsight' (default)
+	 * or 'blooms-ai'. `configureEmail()` sets the same thing without `init()`,
+	 * and wins when both are given. MIGRATION.md, "Moving email".
+	 */
+	emailTarget?: 'bloomsight' | 'blooms-ai';
+
+	/** blooms.ai API origin for email. Not shared with `apiBase`. Defaults to production. */
+	emailApiBase?: string;
 
 	/**
 	 * Origin of the blooms.ai API, without a trailing path — e.g.
