@@ -16,7 +16,8 @@
     "test:watch": "vitest",
     "pack:check": "npm pack --dry-run",
     "verify:exports": "node scripts/verify-runtime-exports.js",
-    "verify:package": "node scripts/verify-package.js"
+    "verify:package": "node scripts/verify-package.js",
+    "verify:umd": "node scripts/verify-umd.js"
   },
   "keywords": [
     "bloomsight.io",

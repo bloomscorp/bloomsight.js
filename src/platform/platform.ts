@@ -30,32 +30,35 @@ export function initPlatform(): void {
 
 export function resolveBrowser(agent: string = _userAgent): IBrowser | string {
 
-	const _userAgent: string = agent;
+	// Not named `_userAgent`: shadowing the module-level one is what terser
+	// mis-minified in the UMD bundle — the default parameter ended up pointing
+	// at the wrong binding, so `resolveBrowser()` threw (0.8.0–0.9.2).
+	const ua: string = agent;
 
 	let nameOffset: number = 0;
 	let verOffset: number = 0;
 
 	switch (true) {
-		case _userAgent.includes("CriOS"):
+		case ua.includes("CriOS"):
 			return IBrowser.Chrome_iOS;
-		case _userAgent.includes("Edge"):
+		case ua.includes("Edge"):
 			return IBrowser.ME_Legacy;
-		case _userAgent.includes("Edg"):
+		case ua.includes("Edg"):
 			return IBrowser.ME_Chromium;
-		case _userAgent.includes("OPR"):
+		case ua.includes("OPR"):
 			return IBrowser.Opera_Next;
-		case _userAgent.includes("Opera"):
+		case ua.includes("Opera"):
 			return IBrowser.Opera;
-		case _userAgent.includes("Chrome"):
+		case ua.includes("Chrome"):
 			return IBrowser.Chrome;
-		case _userAgent.includes("Safari"):
+		case ua.includes("Safari"):
 			return IBrowser.Safari;
-		case _userAgent.includes("Firefox"):
+		case ua.includes("Firefox"):
 			return IBrowser.Firefox;
-		case _userAgent.includes("MSIE") || _userAgent.includes("Trident"):
+		case ua.includes("MSIE") || ua.includes("Trident"):
 			return IBrowser.IE;
-		case ((nameOffset = _userAgent.lastIndexOf(' ') + 1) < (verOffset = _userAgent.lastIndexOf('/'))):
-			return _userAgent.substring(nameOffset, verOffset);
+		case ((nameOffset = ua.lastIndexOf(' ') + 1) < (verOffset = ua.lastIndexOf('/'))):
+			return ua.substring(nameOffset, verOffset);
 		default:
 			return "Unknown";
 	}
@@ -68,20 +71,23 @@ export function resolveBrowserVersion(agent: string = _userAgent): string {
 
 export function resolveOS(agent: string = _userAgent): IOperatingSystem {
 
-	const _userAgent: string = agent;
+	// Not named `_userAgent`: shadowing the module-level one is what terser
+	// mis-minified in the UMD bundle — the default parameter ended up pointing
+	// at the wrong binding, so `resolveBrowser()` threw (0.8.0–0.9.2).
+	const ua: string = agent;
 
 	switch (true) {
-		case /Android/i.test(_userAgent):
+		case /Android/i.test(ua):
 			return IOperatingSystem.Android;
-		case /Windows/i.test(_userAgent):
+		case /Windows/i.test(ua):
 			return IOperatingSystem.Windows;
-		case /iPhone|iPad|iPod/i.test(_userAgent):
+		case /iPhone|iPad|iPod/i.test(ua):
 			return IOperatingSystem.iOS
-		case /Mac OS/i.test(_userAgent):
-			return /iPad|Macintosh/.test(_userAgent) && document && 'ontouchend' in document
+		case /Mac OS/i.test(ua):
+			return /iPad|Macintosh/.test(ua) && document && 'ontouchend' in document
 				? IOperatingSystem.iOS
 				: IOperatingSystem.MacOS;
-		case /Linux/i.test(_userAgent) && !/Android/i.test(_userAgent):
+		case /Linux/i.test(ua) && !/Android/i.test(ua):
 			return IOperatingSystem.Linux;
 		default:
 			return IOperatingSystem.Unknown

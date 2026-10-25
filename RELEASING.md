@@ -47,6 +47,34 @@ Two things guard this:
   here ever executed the published artifact. Needs network access
 - publishing runs through CI on a fresh checkout
 
+## Another: the UMD bundle threw on every `sendEmail` (0.8.0–0.9.2)
+
+`umd/production.js` from 0.8.0 through 0.9.2 threw
+`o.includes is not a function` on every `sendEmail` call, and inside `init()`'s
+platform step, for any site loading the library with a script tag. The npm
+`dist/` builds were fine.
+
+The source was correct. `src/platform/platform.ts` had
+`resolveBrowser(agent = _userAgent) { const _userAgent = agent; … }`: a default
+parameter whose function body declared a variable with the same name. That is
+legal and the default refers to the outer binding. But **terser**, used by
+webpack for the UMD, mangled it to `function u(e=o){const o=e…}`, so the default
+pointed at the webpack module object instead of the user agent. esbuild, used by
+tsup for `dist/`, got it right. The same shape was in `resolveOS`.
+
+Every unit test passed, because they run the source. Nothing ever executed the
+minified artifact.
+
+- **Fixed in 0.10.0** by not shadowing the name: the inner binding is `ua`.
+- **Guarded by `npm run verify:umd`**, which runs `umd/production.js` the way a
+  script-tag site does (in Node's `vm`, with a browser-shaped global and a
+  stubbed `fetch`). It calls `sendEmail` without `init()`, `configureEmail`
+  and `init()`, and checks where each request goes. It runs after `bundle` in
+  `before:init` and in both workflows. Pointed at the published 0.9.2 bundle,
+  it fails.
+
+Sites pinned to 0.7.0 (served from the git tag) were never affected.
+
 ## How it reaches users
 
 Two channels, both fed by **one `npm publish`**:
