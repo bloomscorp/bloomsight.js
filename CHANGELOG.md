@@ -1,5 +1,17 @@
 
 
+# [0.10.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.9.2...v0.10.0) (2026-10-25)
+
+
+### Bug Fixes
+
+* sendEmail threw in the UMD bundle (0.8.0–0.9.2), and gate on running it ([812bb78](https://github.com/bloomscorp/bloomsight.js/commit/812bb785df7e4f19b4832fccf5fd083194633a4a))
+
+
+### Features
+
+* configureEmail() moves email to blooms.ai, independent of events ([00e4ba6](https://github.com/bloomscorp/bloomsight.js/commit/00e4ba687ba4555bb3ee48a33d1b5d7375757e25))
+
 ## [0.9.2](https://github.com/bloomscorp/bloomsight.js/compare/v0.9.1...v0.9.2) (2026-10-15)
 
 
