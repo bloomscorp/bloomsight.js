@@ -2,6 +2,19 @@
 
 A client side javascript library to work with bloomsight.io
 
+> **Role in the Footprint platform.** `bloomsight.js` is the browser **tracking
+> SDK** of the Bloomsight / Footprint system (see
+> [`../doc/README.md`](../doc/README.md)). A customer embeds it on their website,
+> configures it with a `propertyToken`, and the library streams **page views**
+> and **custom events** — enriched with platform, geo and UTM data — to the
+> [`eavesdrop`](../eavesdrop) backend. It can also trigger the platform's email
+> engine from the browser via `sendEmail`. The data it collects is what powers
+> the analytics shown in the [`loupe`](../loupe) dashboard.
+>
+> This is a published, standalone npm package (`@bloomscorp/bloomsight.js`); the
+> sections below are its public API. See [Architecture & internals](#architecture--internals)
+> for the technical specification.
+
 ## Badges
 
 [![ License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE.md)
@@ -248,6 +261,58 @@ event resolution approach as below to use our library.
 > Note: Make sure the element selector is unique within the page. If there are multiple elements present
 > in the page with same selector, then only the first element will be considered for event resolution.
 > 
+
+## Architecture & internals
+
+> Technical specification of how the library is built and what happens at runtime.
+
+### Public API
+
+Exported from `src/index.ts` (also attached to `window` in browser builds):
+
+| Function             | Purpose |
+|----------------------|---------|
+| `init(config)`       | Validates the `propertyToken` against the host, then bootstraps platform/user/session detection. Sets `config.stopAll` if the token is invalid for the current host. |
+| `pageViewObserver()` | Begins observing and reporting page‑view events. |
+| `resolveSimpleEvent(eventToken, label?)` | Reports a named event. |
+| `resolveDataEvent(eventToken, data, label?)` | Reports an event with a structured payload. |
+| `sendEmail(...)`     | Sends an email through the platform's email engine (Gmail / custom SMTP). |
+
+### Source layout (`src/`)
+
+| Module           | Responsibility |
+|------------------|----------------|
+| `configuration/` | `IConfig` type and config state (`init`, `isConfiguredProperly`). |
+| `property/`      | Validates the `propertyToken` for the current host before tracking. |
+| `event/`         | Page‑view, simple‑event and data‑event resolvers + their payload interfaces. |
+| `transmission/`  | HTTP layer — one transmitter per concern (page‑view, simple/data event, email, location, property). Mirrors the backend's "Raintree" transmission pattern. |
+| `session/`, `user/` | Anonymous session and user identity bootstrapping. |
+| `platform/`      | Browser / device / operating‑system detection. |
+| `location/`      | Visitor geo/location resolution (via the backend geo‑IP endpoint). |
+| `utils/`         | `bot-handler` (skip bot traffic), `utm-resolver`, `browser-api`, local/session storage, helpers. |
+| `email/`         | `sendEmail` implementation and email‑engine‑type enum. |
+| `support/`       | Shared messages and request‑mapper (endpoint paths). |
+
+### Runtime flow
+
+`init()` → `isConfiguredProperly` → `validateProperty(token, host)` → on success:
+`initPlatform()` + `initUser()` + `initSession()`. Tracking calls
+(`pageViewObserver`, `resolveSimpleEvent`, `resolveDataEvent`) then post enriched
+payloads to `eavesdrop`. Bot traffic is filtered, and `logOnly`/`stop*` flags can
+suppress network writes (useful in development).
+
+### Build & distribution
+
+| Tool | Output |
+|------|--------|
+| `tsup` (`npm run build`) | ESM + CJS + d.ts in `dist/` (the npm package: `main`/`module`/`types`). |
+| `webpack` (`npm run bundle`) | UMD bundles in `umd/` (`production.js`, `dom.js`) served via the jsDelivr CDN. |
+| `vitest` (`npm test`) | Unit tests (with WebdriverIO browser testing configured). |
+| `release-it` (`npm run release`) | Conventional‑commit driven releases + `CHANGELOG.md`. |
+
+Tooling: TypeScript, Husky + commitlint (conventional commits), `.release-it.json`.
+Requires **Node ≥ 20**. The only runtime dependency is `bmx-pastebox` (a small
+Bloomscorp storage helper).
 
 ## License
 
