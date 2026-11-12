@@ -1,5 +1,12 @@
 
 
+# [0.11.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.10.0...v0.11.0) (2026-11-12)
+
+
+### Features
+
+* bot check and honeypot for email on blooms.ai ([51f78ef](https://github.com/bloomscorp/bloomsight.js/commit/51f78ef06b9446e82be0dc537ef067fdc0cdc53a))
+
 # [0.10.0](https://github.com/bloomscorp/bloomsight.js/compare/v0.9.2...v0.10.0) (2026-10-25)
 
 
