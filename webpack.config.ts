@@ -1,6 +1,10 @@
 const {resolve} = require("path");
+const {DefinePlugin} = require("webpack");
+const {version} = require("./package.json");
 
 module.exports = {
+	// src/b2/version.ts: the version sent to blooms.ai as `bloomsightClient`.
+	plugins: [new DefinePlugin({__BLOOMSIGHT_VERSION__: JSON.stringify(version)})],
 	// Two bundles: the core library, and the optional DOM helper that sites load
 	// as a second script tag. `dom` used to be a hand-written file in umd/ that
 	// no build step produced — it is now built from src/dom.ts like everything

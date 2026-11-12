@@ -219,6 +219,30 @@ sendEmail(
 | `onSuccess`       | `() => void` | callback for operation success event                                                       | ❌         | NA      |
 | `onError`         | `() => void` | callback for operation error event                                                         | ❌         | NA      |
 
+#### Bot check and honeypot (email on blooms.ai)
+
+With email on blooms.ai (`configureEmail({ target: 'blooms-ai' })`), blooms.ai can
+require a Cloudflare Turnstile bot check for a project's forms. **Nothing changes in
+your code.** When blooms.ai asks for it, the library loads Cloudflare's script (only
+then), gets a token from the visitor's browser, and sends again. Usually the visitor
+sees nothing; if Cloudflare needs a click, a small widget shows over the page and is
+removed afterwards.
+
+- If your site sets a Content Security Policy, allow `https://challenges.cloudflare.com`
+  in `script-src` and `frame-src`.
+- If the check cannot run (blocked script, failed challenge), `onError` runs, and the
+  error passed to `configureEmail`'s `onError` has the code `BOT_CHECK_FAILED`.
+- Cloudflare sees the visitor's request, so mention it in your privacy policy.
+
+**Honeypot (optional).** Add a hidden field named `bloomsightHp` to your form and include
+it in the `FormData`. People never see it, so it stays empty; bots that fill every field
+fill it, and blooms.ai drops their message while answering as if it went.
+
+```html
+<input type="text" name="bloomsightHp" tabindex="-1" autocomplete="off"
+       style="position:absolute;left:-10000px" aria-hidden="true">
+```
+
 ## Other Integration Options
 If the framework impose limited control over the codebase but one have access to JS snippets, use the DOM based 
 event resolution approach as below to use our library.
